@@ -1,0 +1,106 @@
+{% extends "Base.html" %}
+
+{% block Title %}
+    register
+{% endblock %}
+
+{% block Style %}
+    {% load static %}
+    <style>
+        body {
+            background-image: url("{% static 'images/Auth1.jpg' %}");
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        .container-box {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .form-card {
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        .form-control:focus {
+            box-shadow: none;
+            border-color: rgb(34, 172, 34);
+        }
+        .btn-success {
+            background-color: rgb(34, 172, 34);
+            border: none;
+        }
+        .btn-success:hover {
+            background-color: rgb(43, 133, 20);
+        }
+        .illustration {
+            max-width: 100%;
+            height: auto;
+        }
+        .social-btn img {
+            height: 24px;
+        }
+        .content{
+            color: rgb(43, 133, 20);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: 800;
+        }
+    </style>
+{% endblock %}
+
+{% block Content %}
+    <div class="container container-box">
+        <div class="row w-100 align-items-center">
+            
+            <!-- Left: Illustration -->
+            <div class="col-lg-5">
+            <div class="form-card">
+                <div class="text-center mb-3">
+                <h2 class="fw-bold mt-2">Create account</h2>
+                </div>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-2">
+                        <input type="text" class="rounded-pill form-control" name="Username" placeholder="User Name " required style="height: 45px;">
+                    </div>
+                    <div class="mb-2">
+                        <input type="Email" class="rounded-pill form-control" name="Email" placeholder="Email" required style="height: 45px;">
+                    </div>
+                    <div class="mb-2">
+                        <input type="password" class="rounded-pill form-control" name="Password" placeholder="Password" required style="height: 45px;">
+                    </div>
+                    <div class="mb-2">
+                        <input type="Password" class="rounded-pill form-control" name="ConfirmPassword" placeholder="Confirm Password" required style="height: 45px;">
+                    </div>
+                    <div class="mb-2 ps-2">
+                        <p >{{msg}}</p>
+                    </div>
+                    <div class="d-grid mb-3">
+                        <button type="submit" class="btn btn-success rounded-pill" style="height: 45px;">Create account</button>
+                    </div>
+                    <p class="text-center text-muted">or sign up with</p>
+                    <div class="d-flex justify-content-center gap-3 mb-3">
+                        <a href="#" class="btn btn-outline-secondary rounded-circle social-btn"><img src="https://img.icons8.com/ios-filled/50/google-logo.png" alt="G"></a>
+                        <a href="#" class="btn btn-outline-secondary rounded-circle social-btn"><img src="https://img.icons8.com/ios-filled/50/facebook.png" alt="F"></a>
+                        <a href="#" class="btn btn-outline-secondary rounded-circle social-btn"><img src="https://img.icons8.com/ios-filled/50/pinterest--v1.png" alt="P"></a>
+                    </div>
+                    <p class="text-center small text-muted">
+                        By creating an account you agree to Messimo’s<br>
+                        <a href="#" class="text-success">Terms of Services</a> and <a href="#" class="text-success">Privacy Policy</a>.
+                    </p>
+                </form>
+            </div>
+            </div>
+            
+            <!-- Right: Form -->
+            <div class="col-lg-7 d-none d-lg-block text-center">
+                 <h1 class="content mb-2">Hey There!</h1>
+                <h5 class="mb-5">Welcome Back <br> You are just one step away to your feed.</h5>
+
+                <p class="text-center text-muted">Do you have an account? <a href="/auth">Click Now</a></p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,204 @@
+{% extends "Base.html" %}
+
+{% block Title %}
+Journal
+{% endblock %}
+
+{% block Style %}
+    {% load static %}
+    <style>
+        .main-nav-bar{
+            flex-direction: column;
+        }
+        .menu-btn{
+            display: none;
+        }
+        .mainbox{
+            height: 90vh;
+        }
+        .nav-icon{
+            color: black;
+            text-decoration: none;
+        }
+        .box{
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+
+
+        .input-area{
+            height: 7vh;
+            overflow: hidden;
+            padding: 2px;
+            margin: 0px;
+        }
+        .input-area input{
+            height: 100%;
+            width: 100%;
+            border-radius: 10px;
+            font-size: 25px;
+            padding-left: 5px;
+            overflow: hidden;
+        }
+        .item-btn{
+            border-radius: 15px;
+            background: transparent;
+            backdrop-filter: blur(10px);
+            height: 50px;
+            color: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .scrl-box{
+            height: 95%;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            overflow-y: scroll;
+        }
+        .divider{ 
+            border-radius: 10px;
+            border: 3px double green;
+            backdrop-filter: blur(5px);
+            margin: 5px;
+        }
+        @media (max-width:600px){
+            .main-nav-bar{
+                flex-direction: row;
+            }
+            .menu-btn{
+                display: inline;
+            }
+            .display-menu{
+                display: none;
+            }
+            .menu-icons-bar{
+                position: absolute;
+                top: 104%;
+                left: 0%;
+                backdrop-filter: blur(10px);
+                height: 95vh;
+                transition: 0.5s;
+                display: inline;
+            }
+            .nav-icon{
+                margin-top: 20px;
+                color: rgb(0, 0, 0);
+                font-size: 25px;
+                margin-left: 20px;
+            }
+
+            .icon-box{
+                display: flex;
+                height: 80px;
+                align-items: center;
+            }
+            .right-journal{
+                display: none;
+            }
+            .left-journal{
+                padding-top: 0 !important;
+    
+            }
+            .box{
+                justify-content: start;
+            }
+            .scrl-box{
+                height: 100%;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block Content %}
+    {% include 'Navbar.html' with Project=Project %}
+    <div class="mainbox col-12 row">
+        <div class="col-12 col-md-6 box right-journal p-4">
+           <h3 class="mb-3">{{User}} Enter your Entry's</h3>
+            <form action="" method="post" class="row col-12 col-md-10 form-tag" id="Register" >
+            {% csrf_token %}
+            {% for i in "1234" %}
+                <div class="col-8 input-area" >
+                    <input class="focus-in form-control" type="text" name="Name{{i}}" placeholder="Name ac" onclick="m()">
+                </div>
+                <div class="col-4 input-area">
+                    <input class="focus-in form-control" type="number" step="0.01" name="Amount{{i}}" placeholder="Amount ">
+                </div>
+            {% endfor %}
+                <h3 style="text-align: center;">To</h3>
+            {% for i in "5678" %}
+                <div class="col-8 input-area">
+                    <input class="focus-in form-control" type="text" name="Name{{i}}" placeholder="Name ac">
+                </div>
+                <div class="col-4 input-area">
+                    <input class="focus-in form-control" type="number" step="0.01" name="Amount{{i}}" placeholder="Amount ">
+                </div>
+            {% endfor %} 
+            <div class="col-12 p-0" style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="col-5 mt-3 input-area" style="height: 8vh;">
+                    <input type="text form-control" required name="Code" placeholder="Code">
+                </div>
+                <button class="col-5 mt-3 item-btn">
+                    <h4>Submit</h4>
+                </button>
+            </div>
+            </form>
+        </div>
+        <div class="col-12 col-md-6 box left-journal p-3 ">
+            <div class="scrl-box" id="scrl-box">
+                {% if Code_data %}
+                    {% for Code_id in Code_data %}
+                        <div class="row col-11 divider">
+                        {% for Journal_obj in Entry_data %}
+                            {% if Code_id.code == Journal_obj.code %}
+                                {% if Journal_obj.entry == "DR" %}
+                                    <div class="col-7"><h4> {{Journal_obj.name}} Dr </h4></div>
+                                    <div class="col-4"><h4> {{Journal_obj.amount}} </h4></div>
+                                    <div class="col-1"></div>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                        {% for Journal_obj in Entry_data %}
+                            {% if Code_id.code == Journal_obj.code %}
+                                {% if Journal_obj.entry == "CR" %}
+                                    <div class="col-1"></div>
+                                    <div class="col-7"><h4> {{Journal_obj.name}}  </h4></div>
+                                    <div class="col-4"><h4> {{Journal_obj.amount}} </h4></div>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}  
+                        <br> <br>
+                        <div class="col-9" style="color: rgb(136, 131, 122);"><h4>manage your data</h4></div>
+                        <div class="col-3" style="display: flex; justify-content: space-between;">
+                            <svg style="color: rgb(136, 131, 122);" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16" onclick="deleteconfirm('{{Code_id.Code}}')">
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                            </svg>
+                            <svg style="color: rgb(136, 131, 122);" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16" onclick="editeconfirm('{{Code_id.Code}}')">
+                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                            </svg>
+                        </div>
+                        </div> 
+                    {% endfor %}
+                {% else %}
+                    <h3 class="ms-3 mt-5 pt-5">Data Is Not Founted <br>Please Enter Jornal Entry's</h3>
+                {%endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block Script %}
+        <script>
+            function menubar(){
+                document.getElementById('menu_bar').className="menu-icons-bar"
+                document.getElementById('scrl-box').className="d-none"
+            }
+        </script>
+{% endblock %}

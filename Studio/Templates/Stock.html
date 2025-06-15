@@ -1,0 +1,74 @@
+{% extends "Base.html" %}
+
+{% block Title %}
+Stock
+{% endblock %}
+
+{% block Style %}
+    {% load static %}
+    <style>
+        .main-nav-bar{
+            flex-direction: column;
+        }
+        .menu-btn{
+            display: none;
+        }
+        .mainbox{
+            height: 90vh;
+        }
+        .nav-icon{
+            color: black;
+            text-decoration: none;
+        }
+        @media (max-width:600px){
+            .main-nav-bar{
+                flex-direction: row;
+            }
+            .menu-btn{
+                display: inline;
+            }
+            .display-menu{
+                display: none;
+            }
+            .menu-icons-bar{
+                position: absolute;
+                top: 104%;
+                left: 0%;
+                backdrop-filter: blur(10px);
+                height: 95vh;
+                transition: 0.5s;
+                display: inline;
+            }
+            .nav-icon{
+                margin-top: 20px;
+                color: rgb(0, 0, 0);
+                font-size: 25px;
+                margin-left: 20px;
+            }
+
+            .icon-box{
+                display: flex;
+                height: 80px;
+                align-items: center;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block Content %}
+    {% include 'Navbar.html' with Project=Project %}
+    <div class="mainbox">
+        <div class="col-12 row" id="stock">
+            <h4>wqeqwe</h4>
+        </div>
+    </div>
+{% endblock %}
+
+{% block Script %}
+        <script>
+            function menubar(){
+                document.getElementById('menu_bar').className="menu-icons-bar"
+                document.getElementById('stock').className="d-none"
+            }
+        </script>
+{% endblock %}

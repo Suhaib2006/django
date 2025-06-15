@@ -1,0 +1,17 @@
+<div class="row main-nav-bar col-12 d-flex justify-content-center align-items-center" style="height: 10vh; backdrop-filter: blur(10px); border-bottom: 2px solid green;">
+    <div class="col-10 col-md-6" >
+        <h1 class="ms-4">{{Project}}</h1>
+    </div>
+    <div class="col-2 menu-btn" >
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="col-12 bi bi-three-dots-vertical" viewBox="0 0 16 16" onclick="menubar()">
+            <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+        </svg>
+    </div>
+    <div class=" col-md-6 me-4  display-menu row justify-content-between" id="menu_bar">
+        <div class="col-md-2 col-12 icon-box"><h4><a class="nav-icon" href="{% url 'Journal' Project %}" >Journal</a></h4></div>
+        <div class="col-md-2 col-12 icon-box"><h4><a class="nav-icon" href="{% url 'Ledger' Project %}" >Ledger</a></h4></div>
+        <div class="col-md-2 col-12 icon-box"><h4><a class="nav-icon" href="{% url 'TrialBalance' Project %}" >Trial</a></h4></div>
+        <div class="col-md-2 col-12 icon-box"><h4><a class="nav-icon" href="{% url 'Stock' Project %}" >Stoke</a></h4></div>
+        <div class="col-md-2 col-12 icon-box"><h4><a class="nav-icon" >Payroll</a></h4></div>
+    </div>
+</div>

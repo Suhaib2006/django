@@ -1,0 +1,13 @@
+
+    {% if Length < 6 %}
+    <form method="post" class="d-flex ms-5 flex-column justify-content-center" style="height: 100%;">
+    {% csrf_token %} 
+        <h2>Create your first project</h2>
+        <input class="inputprojectname" name="projectname" type="text" style="height: 45px; width: 80%;">
+        <button class="col-4 mt-3 btn-class"><h3>Create</h3></button>
+    </form>
+    {% else %}
+    <div class="d-flex ms-5 flex-column justify-content-center" style="height: 100%;">
+        <h1>Maximum number of project created</h1>
+    </div>
+    {% endif %}

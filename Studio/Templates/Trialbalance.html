@@ -1,0 +1,117 @@
+{% extends "Base.html" %}
+
+{% block Title %}
+Trial Balance
+{% endblock %}
+
+{% block Style %}
+    {% load static %}
+    <style>
+        .main-nav-bar{
+            flex-direction: column;
+        }
+        .menu-btn{
+            display: none;
+        }
+        .mainbox{
+            height: 90vh;
+        }
+        .nav-icon{
+            color: black;
+            text-decoration: none;
+        }
+        .scrl-box{
+            height: 60vh;
+            overflow-y: scroll;
+        }
+        .box{
+            background-color: green;
+            color: white;
+            border-radius: 20px;
+        }
+        .sig-box{
+            border-radius: 5px;
+            max-height: 7vh;
+            background-color: white;
+            color: black;
+        }
+        @media (max-width:600px){
+            .main-nav-bar{
+                flex-direction: row;
+            }
+            .menu-btn{
+                display: inline;
+            }
+            .display-menu{
+                display: none;
+            }
+            .menu-icons-bar{
+                position: absolute;
+                top: 104%;
+                left: 0%;
+                backdrop-filter: blur(10px);
+                height: 95vh;
+                transition: 0.5s;
+                display: inline;
+            }
+            .nav-icon{
+                margin-top: 20px;
+                color: rgb(0, 0, 0);
+                font-size: 25px;
+                margin-left: 20px;
+            }
+
+            .icon-box{
+                display: flex;
+                height: 80px;
+                align-items: center;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block Content %}
+    {% include 'Navbar.html' with Project=Project %}
+    <div class="mainbox row col-12">
+        <div class="col-12" id="trial">
+            <div class="row d-flex justify-content-center align-items-center" id="stock">
+                <h2 class="mt-2 col-10 text-capitalize box d-flex justify-content-center align-items-center" style="height: 10vh;">Trial balane of {{Project}} </h2>
+                <div class="row col-10 d-flex justify-content-center align-items-center" >
+                    <div class="col-2"><h3>No</h3></div>
+                    <div class="col-4 text-center"><h3>Perticular</h3></div>
+                    <div class="col-3"><h3>Dr</h3></div>
+                    <div class="col-3"><h3>Cr</h3></div>
+                </div>
+                <div class="row col-10 scrl-box box mt-2 d-flex justify-content-center ">
+                    {% for obj in Data %}
+                        <div class="col-12 mt-2 sig-box row d-flex justify-content-center align-items-center">
+                            <div class="col-2 mt-1"><h4>{{obj.id}}</h4></div>
+                            <div class="col-4 mt-1"><h4></h4></div>
+                            {% if obj.entry == "DR" %}
+                                <div class="col-3 mt-1"><h4>{{obj.amount}}</h4></div>
+                                <div class="col-3 mt-1"><h4>-</h4></div>
+                            {% else %}
+                                <div class="col-3 mt-1"><h4>-</h4></div>
+                                <div class="col-3 mt-1"><h4>{{obj.amount}}</h4></div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="row col-10 box mt-2 d-flex justify-content-center align-items-center" style="height: 10vh;">
+                    <div class="col-6"><h3>Balance</h3></div>
+                    <div class="col-3"><h4>-</h4></div>
+                    <div class="col-3"><h4>{{obj.amount}}</h4></div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block Script %}
+        <script>
+            function menubar(){
+                document.getElementById('menu_bar').className="menu-icons-bar"
+                document.getElementById('trial').className="d-none"
+            }
+        </script>
+{% endblock %}
