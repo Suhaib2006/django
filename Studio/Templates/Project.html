@@ -67,6 +67,11 @@ Journal
             backdrop-filter: blur(5px);
             margin: 5px;
         }
+        .btn-class{
+            border-radius: 15px;
+            background-color: green;
+            color: white;
+        }
         @media (max-width:600px){
             .main-nav-bar{
                 flex-direction: row;
@@ -175,7 +180,7 @@ Journal
                         <br> <br>
                         <div class="col-9" style="color: rgb(136, 131, 122);"><h4>manage your data</h4></div>
                         <div class="col-3" style="display: flex; justify-content: space-between;">
-                            <svg style="color: rgb(136, 131, 122);" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16" onclick="deleteconfirm('{{Code_id.Code}}')">
+                            <svg style="color: rgb(136, 131, 122);" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16" onclick="deleteconfirm('{{Code_id.code}}')">
                                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
                                 <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
                             </svg>
@@ -191,6 +196,14 @@ Journal
                 {%endif %}
             </div>
         </div>
+
+        <div id="delete" class="d-none col-12 d-flex justify-content-center flex-column align-items-center position-absolute" style="height: 90vh; backdrop-filter: blur(10px);">
+            <div class="p-3 col-10 col-md-6 border border-dark border-3" style="min-height: 20vh; border-radius: 10px;">
+                <h2>are you sure ou want delete this data</h2>
+                <h3 id="code"></h3>
+                <button class="btn-class col-5 p-1"><h4>Confirm</h4></button>
+            </div>
+        </div>
     </div>
 {% endblock %}
 
@@ -199,6 +212,11 @@ Journal
             function menubar(){
                 document.getElementById('menu_bar').className="menu-icons-bar"
                 document.getElementById('scrl-box').className="d-none"
+                document.getElementById('delete').className="d-none"
+            }
+            function deleteconfirm(Code){
+                document.getElementById('code').innerText=`Code = ${Code}`
+                document.getElementById('delete').className=" col-12 d-flex justify-content-center flex-column align-items-center position-absolute"
             }
         </script>
 {% endblock %}

@@ -60,7 +60,25 @@ def Ledger_Page(request,Project):
         return render(request,'Ledger.html',Data)
 
 def TrialBalance_Page(request,Project):
-    return render(request,'Trialbalance.html',{"Project":Project})
+    if request.user.is_authenticated:
+        name = request.user.username
+        user = User.objects.get(username=name)
+        project = ProjectInfo.objects.get(user=user,project=Project)
+        Trial=TrialInfo.objects.filter(project=project)
+        Drsum=0
+        Crsum=0
+        for item in Trial:
+            if item.state == "DR":
+                Drsum+=item.amount
+            else:
+                Crsum+=item.amount
+        Data={
+            "Project":Project,
+            "Trial":Trial,
+            "Drsum":Drsum,
+            "Crsum":Crsum,
+        }
+        return render(request,'Trialbalance.html',Data)
 
 def Stock_Page(request,Project):
     return render(request,'Stock.html',{"Project":Project})
@@ -86,4 +104,11 @@ def Account_Page(request,Account,Project):
         else:
             Balance=Crsum-Drsum
             State="CR"
+        try:
+            Data=project.Trials.get(name=Account)
+            Data.amount=Balance
+            Data.state=State
+            Data.save()
+        except:
+            project.Trials.create(project=project,name=Account,amount=Balance,state=State)
         return render(request,'Ledgerview.html',{"Account":Account,"Data":unique,"Balance":Balance,"State":State})

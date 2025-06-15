@@ -16,5 +16,6 @@ class CodeInfo(models.Model):
 class TrialInfo(models.Model):
         project= models.ForeignKey(ProjectInfo, related_name="Trials", on_delete=models.CASCADE)
         name=models.CharField(max_length=100)
+        amount=models.FloatField()
         state=models.CharField(max_length=10)
 
