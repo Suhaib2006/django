@@ -7,7 +7,7 @@ class DataInfo(models.Model):
         name=models.CharField(max_length=100)
         amount=models.FloatField(default=float)
         entry=models.CharField(max_length=10)
-        active=models.BooleanField(default=True)
+        active=models.BooleanField(default=False)
 
 class CodeInfo(models.Model):
         project= models.ForeignKey(ProjectInfo, related_name="Codes", on_delete=models.CASCADE)
@@ -18,4 +18,5 @@ class TrialInfo(models.Model):
         name=models.CharField(max_length=100)
         amount=models.FloatField()
         state=models.CharField(max_length=10)
+        order=models.IntegerField()
 

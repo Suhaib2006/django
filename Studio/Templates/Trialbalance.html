@@ -17,16 +17,16 @@ Trial Balance
             height: 90vh;
         }
         .nav-icon{
-            color: black;
+            color: white;
             text-decoration: none;
         }
         .scrl-box{
-            height: 55vh;
+            max-height: 55vh;
             overflow-y: scroll;
         }
         .box{
-            background-color: green;
-            color: white;
+            background-color: black;
+            color: rgb(255, 115, 0);
             border-radius: 20px;
         }
         .sig-box{
@@ -57,7 +57,6 @@ Trial Balance
             }
             .nav-icon{
                 margin-top: 20px;
-                color: rgb(0, 0, 0);
                 font-size: 25px;
                 margin-left: 20px;
             }
@@ -77,35 +76,40 @@ Trial Balance
 {% block Content %}
     {% include 'Navbar.html' with Project=Project %}
     <div class="mainbox row col-12">
-        <div class="col-12" id="trial">
-            <div class="row d-flex justify-content-center align-items-center" id="stock">
-                <h2 class="mt-3 col-11 text-capitalize box d-flex justify-content-center align-items-center" style="height: 10vh;">Trial balane of {{Project}} </h2>
-                <div class="row col-11 d-flex justify-content-center align-items-center" >
-                    <div class="col-4"><h3>Perticular</h3></div>
-                    <div class="col-4"><h4>Dr</h3></div>
-                    <div class="col-4"><h4>Cr</h3></div>
+        <div class="col-12 col-md-6" id="trial">
+            {% if Trial %}
+                <div class="row d-flex justify-content-center align-items-center" id="stock">
+                    <h2 class="mt-3 col-11 text-capitalize box d-flex justify-content-center align-items-center" style="height: 10vh;"><b>Trial balane of {{Project}}</b> </h2>
+                    <div class="row col-11 d-flex justify-content-center align-items-center" >
+                        <div class="col-6"><h3>Perticular</h3></div>
+                        <div class="col-3"><h4>Dr</h3></div>
+                        <div class="col-3"><h4>Cr</h3></div>
+                    </div>
+                    <div class="row col-11 scrl-box box mt-2  justify-content-center ">
+                            {% for obj in Trial %}
+                                <div class="col-12 sig-box row d-flex justify-content-center align-items-center">
+                                    
+                                    <div class="col-6 mt-1"><h4>{{obj.name}}</h4></div>
+                                    {% if obj.state == "DR" %}
+                                        <div class="col-3 mt-1"><h4>{{obj.amount|floatformat:-1}}</h4></div>
+                                        <div class="col-3 mt-1"><h4></h4></div>
+                                    {% else %}
+                                        <div class="col-3 mt-1"><h4></h4></div>
+                                        <div class="col-3 mt-1"><h4>{{obj.amount|floatformat:-1}}</h4></div>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                    </div>
+                    <div class="row col-11 box mt-2 d-flex justify-content-center align-items-center" style="height: 10vh;">
+                        <div class="col-6"><h3>{{Tally}}</h3></div>
+                        <div class="col-6 text-center"><h3>{{Amount|floatformat:-1}}</h3></div>
+                    </div>
                 </div>
-                <div class="row col-11 scrl-box box mt-2  justify-content-center ">
-                    {% for obj in Trial %}
-                        <div class="col-12 sig-box row d-flex justify-content-center align-items-center">
-                            
-                            <div class="col-4 mt-1"><h4>{{obj.name}}</h4></div>
-                            {% if obj.state == "DR" %}
-                                <div class="col-4 mt-1"><h4>{{obj.amount|floatformat:-1}}</h4></div>
-                                <div class="col-4 mt-1"><h4></h4></div>
-                            {% else %}
-                                <div class="col-4 mt-1"><h4></h4></div>
-                                <div class="col-4 mt-1"><h4>{{obj.amount|floatformat:-1}}</h4></div>
-                            {% endif %}
-                        </div>
-                    {% endfor %}
+            {% else %}
+                <div class="d-flex justify-content-center col-12" style="height: 80vh; align-items: center; overflow:hidden; ">
+                    <h2 class="text-center col-12">Data Is Not Founted <br>Please Enter Jornal Entry's</h2>
                 </div>
-                <div class="row col-11 box mt-2 d-flex justify-content-center align-items-center" style="height: 10vh;">
-                    <div class="col-4"><h3>Balance</h3></div>
-                    <div class="col-4"><h3>{{Drsum|floatformat:-1}}</h3></div>
-                    <div class="col-4"><h3>{{Crsum|floatformat:-1}}</h3></div>
-                </div>
-            </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

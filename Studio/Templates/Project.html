@@ -17,7 +17,7 @@ Journal
             height: 90vh;
         }
         .nav-icon{
-            color: black;
+            color: white;
             text-decoration: none;
         }
         .box{
@@ -63,13 +63,13 @@ Journal
         }
         .divider{ 
             border-radius: 10px;
-            border: 3px double green;
+            border: 3px solid orange;
             backdrop-filter: blur(5px);
             margin: 5px;
         }
         .btn-class{
             border-radius: 15px;
-            background-color: green;
+            background-color: orange;
             color: white;
         }
         @media (max-width:600px){
@@ -93,7 +93,6 @@ Journal
             }
             .nav-icon{
                 margin-top: 20px;
-                color: rgb(0, 0, 0);
                 font-size: 25px;
                 margin-left: 20px;
             }
@@ -115,6 +114,9 @@ Journal
             }
             .scrl-box{
                 height: 100%;
+            }
+            .divider div h4 {
+                font-size: 21px;
             }
         }
     </style>
@@ -154,16 +156,16 @@ Journal
             </div>
             </form>
         </div>
-        <div class="col-12 col-md-6 box left-journal p-3 ">
-            <div class="scrl-box" id="scrl-box">
+        <div class="col-12 col-md-6 box left-journal ">
+            <div class="scrl-box p-3" id="scrl-box">
                 {% if Code_data %}
                     {% for Code_id in Code_data %}
                         <div class="row col-11 divider">
                         {% for Journal_obj in Entry_data %}
                             {% if Code_id.code == Journal_obj.code %}
                                 {% if Journal_obj.entry == "DR" %}
-                                    <div class="col-7"><h4> {{Journal_obj.name}} Dr </h4></div>
-                                    <div class="col-4"><h4> {{Journal_obj.amount}} </h4></div>
+                                    <div class="col-7"><h4> {{Journal_obj.name}} dr </h4></div>
+                                    <div class="col-4"><h4> {{Journal_obj.amount|floatformat:-1}} </h4></div>
                                     <div class="col-1"></div>
                                 {% endif %}
                             {% endif %}
@@ -172,8 +174,8 @@ Journal
                             {% if Code_id.code == Journal_obj.code %}
                                 {% if Journal_obj.entry == "CR" %}
                                     <div class="col-1"></div>
-                                    <div class="col-7"><h4> {{Journal_obj.name}}  </h4></div>
-                                    <div class="col-4"><h4> {{Journal_obj.amount}} </h4></div>
+                                    <div class="col-7"><h4> to {{Journal_obj.name}}  </h4></div>
+                                    <div class="col-4"><h4> {{Journal_obj.amount|floatformat:-1}} </h4></div>
                                 {% endif %}
                             {% endif %}
                         {% endfor %}  
@@ -184,7 +186,7 @@ Journal
                                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
                                 <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
                             </svg>
-                            <svg style="color: rgb(136, 131, 122);" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16" onclick="editeconfirm('{{Code_id.Code}}')">
+                            <svg style="color: rgb(136, 131, 122);" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16" onclick="Editing('{{Code_id.code}}')">
                                 <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                                 <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
                             </svg>
@@ -192,7 +194,9 @@ Journal
                         </div> 
                     {% endfor %}
                 {% else %}
-                    <h3 class="ms-3 mt-5 pt-5">Data Is Not Founted <br>Please Enter Jornal Entry's</h3>
+                <div class="d-flex justify-content-center col-12" style="height: 100%; align-items: center; overflow:hidden; ">
+                    <h2 class="text-center col-12">Data Is Not Founted <br>Please Enter Jornal Entry's</h2>
+                </div>
                 {%endif %}
             </div>
         </div>
@@ -201,7 +205,7 @@ Journal
             <div class="p-3 col-10 col-md-6 border border-dark border-3" style="min-height: 20vh; border-radius: 10px;">
                 <h2>are you sure ou want delete this data</h2>
                 <h3 id="code"></h3>
-                <button class="btn-class col-5 p-1"><h4>Confirm</h4></button>
+                <button class="btn-class col-5 p-1" onclick="Delete()"><h4>Confirm</h4></button>
             </div>
         </div>
     </div>
@@ -215,8 +219,15 @@ Journal
                 document.getElementById('delete').className="d-none"
             }
             function deleteconfirm(Code){
-                document.getElementById('code').innerText=`Code = ${Code}`
+                document.getElementById('code').innerText=`${Code}`
                 document.getElementById('delete').className=" col-12 d-flex justify-content-center flex-column align-items-center position-absolute"
+            }
+            function Delete(){
+                code= document.getElementById('code').innerHTML
+                window.location.href=`Delete/${code}/`;
+            }
+            function Editing(Code){
+                window.location.href=`Editing/${Code}/`;
             }
         </script>
 {% endblock %}

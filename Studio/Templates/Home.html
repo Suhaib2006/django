@@ -15,48 +15,52 @@
             align-items: center;
             flex-direction: column;
             border-radius: 50px;
-            border-right: 3px solid green;
+            border-right: 3px solid white;
         }
         .btn-class{
             border-radius: 15px;
-            background-color: green;
+            background-color: black;
+            color: white;
+        }
+        .btn-class:hover{
+            background-color: orange;
             color: white;
         }
         .project-names{
             height: 80vh;
             border-radius: 25px;
-            border: 2px solid green;
             padding: 10px;
         }
         .inputprojectname{
             background: none;
             border: none;
             outline: none;
-            border-bottom: 2px solid black;
-            font-size: 35px;
+            border-bottom: 2px solid white;
+            font-size: 26px;
+            color: white;
         }
         .box-name{
             min-height: 25vh;
         }
         .uniquename{
             color: rgb(255, 255, 255);
-            background-color: green;
+            background-color: black;
+            border: 2px solid orange;
             height: 100%;
             border-radius: 20px;
         }
+        
         @media (max-width:600px){
             .Home_User{
                 height: 25vh;
-                border-left: 3px solid green;
+                border:none;
             }
             .project-names{
                 height: 75vh;
             }
             .uniquename{
-                color: black;
                 backdrop-filter: blur(10px);
-                background :transparent;   
-                border: 2px solid gray;
+                background :transparent;  
             }
         }
     </style>
@@ -69,8 +73,8 @@
                     <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
                     <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
                 </svg>
-                <h1 class="mt-4">{{User.username}}</h1>
-                <h4 class="mt-1">{{User.email}}</h4>
+                <h1 class="mt-4  ">{{User.username}}</h1>
+                <h4 class="mt-1  ">{{User.email}}</h4>
                 <div class="row col-11">
                     <div class="col-6  d-flex justify-content-center align-items-center">
                         <div class="col-12 p-2 row">
@@ -85,6 +89,13 @@
                 </div>
             </div>
             <div class="col-12 col-md-8 d-flex justify-content-center flex-column align-items-center">
+                {% if msg %}
+                    <div class="position-absolute col-md-4 col-10" id="Alertdiv">
+                        <div class="alert alert-danger" role="alert">
+                            <h3>{{msg}}</h3>
+                        </div>
+                    </div>
+                {% endif %}
                 <div class="project-names col-12 col-md-10 ">
                     {% if Project %}
                         <div id="ProjectNames" class="row">
@@ -112,6 +123,9 @@
 
 {% block Script %}
         <script>
+            setTimeout(function() {
+                document.getElementById("Alertdiv").style.display = "none";
+            }, 2000);
             function ProjectNameCreate(){
                 document.getElementById('ProjectNameCreate').className=""
                 document.getElementById('ProjectNames').className="d-none"

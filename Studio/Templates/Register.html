@@ -7,11 +7,7 @@
 {% block Style %}
     {% load static %}
     <style>
-        body {
-            background-image: url("{% static 'images/Auth1.jpg' %}");
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
+        
         .container-box {
             min-height: 100vh;
             display: flex;
@@ -22,18 +18,22 @@
             backdrop-filter: blur(10px);
             border-radius: 20px;
             padding: 2rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 5px 5px 5px 0px rgb(218, 89, 29);
+        }
+        .bi-person-circle{
+            color: white;
         }
         .form-control:focus {
             box-shadow: none;
-            border-color: rgb(34, 172, 34);
+            border-color: orange;
         }
         .btn-success {
-            background-color: rgb(34, 172, 34);
+            background-color: white;
+            color: black;
             border: none;
         }
         .btn-success:hover {
-            background-color: rgb(43, 133, 20);
+            background-color: orange;
         }
         .illustration {
             max-width: 100%;
@@ -43,9 +43,12 @@
             height: 24px;
         }
         .content{
-            color: rgb(43, 133, 20);
+            color: orange;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             font-weight: 800;
+        }
+        .color-msg{
+            color: white;
         }
     </style>
 {% endblock %}
@@ -58,7 +61,7 @@
             <div class="col-lg-5">
             <div class="form-card">
                 <div class="text-center mb-3">
-                <h2 class="fw-bold mt-2">Create account</h2>
+                <h2 class="fw-bold mt-2 color-msg">Create account</h2>
                 </div>
                 <form method="post">
                     {% csrf_token %}
@@ -78,17 +81,29 @@
                         <p >{{msg}}</p>
                     </div>
                     <div class="d-grid mb-3">
-                        <button type="submit" class="btn btn-success rounded-pill" style="height: 45px;">Create account</button>
+                        <button type="submit" class="btn btn-success rounded-pill" style="height: 45px;"><h4><b>Create</b></h4></button>
                     </div>
                     <p class="text-center text-muted">or sign up with</p>
                     <div class="d-flex justify-content-center gap-3 mb-3">
-                        <a href="#" class="btn btn-outline-secondary rounded-circle social-btn"><img src="https://img.icons8.com/ios-filled/50/google-logo.png" alt="G"></a>
-                        <a href="#" class="btn btn-outline-secondary rounded-circle social-btn"><img src="https://img.icons8.com/ios-filled/50/facebook.png" alt="F"></a>
-                        <a href="#" class="btn btn-outline-secondary rounded-circle social-btn"><img src="https://img.icons8.com/ios-filled/50/pinterest--v1.png" alt="P"></a>
+                        <a href="#" class="btn btn-outline-secondary rounded-circle social-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-google" viewBox="0 0 16 16">
+                                <path d="M15.545 6.558a9.4 9.4 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.7 7.7 0 0 1 5.352 2.082l-2.284 2.284A4.35 4.35 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.8 4.8 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.7 3.7 0 0 0 1.599-2.431H8v-3.08z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="btn btn-outline-secondary rounded-circle social-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-facebook" viewBox="0 0 16 16">
+                                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="btn btn-outline-secondary rounded-circle social-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-twitter" viewBox="0 0 16 16">
+                                <path d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334q.002-.211-.006-.422A6.7 6.7 0 0 0 16 3.542a6.7 6.7 0 0 1-1.889.518 3.3 3.3 0 0 0 1.447-1.817 6.5 6.5 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.32 9.32 0 0 1-6.767-3.429 3.29 3.29 0 0 0 1.018 4.382A3.3 3.3 0 0 1 .64 6.575v.045a3.29 3.29 0 0 0 2.632 3.218 3.2 3.2 0 0 1-.865.115 3 3 0 0 1-.614-.057 3.28 3.28 0 0 0 3.067 2.277A6.6 6.6 0 0 1 .78 13.58a6 6 0 0 1-.78-.045A9.34 9.34 0 0 0 5.026 15"/>
+                            </svg>
+                        </a>
                     </div>
-                    <p class="text-center small text-muted">
+                    <p class="text-center small color-msg text-muted">
                         By creating an account you agree to Messimo’s<br>
-                        <a href="#" class="text-success">Terms of Services</a> and <a href="#" class="text-success">Privacy Policy</a>.
+                        <a href="#" class="text-success color-msg">Terms of Services</a> and <a href="#" class="text-success">Privacy Policy</a>.
                     </p>
                 </form>
             </div>
@@ -97,7 +112,7 @@
             <!-- Right: Form -->
             <div class="col-lg-7 d-none d-lg-block text-center">
                  <h1 class="content mb-2">Hey There!</h1>
-                <h5 class="mb-5">Welcome Back <br> You are just one step away to your feed.</h5>
+                <h5 class="mb-5 color-msg">Welcome Back <br> You are just one step away to your feed.</h5>
 
                 <p class="text-center text-muted">Do you have an account? <a href="/auth">Click Now</a></p>
             </div>

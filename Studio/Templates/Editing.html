@@ -1,0 +1,135 @@
+{% extends "Base.html" %}
+
+{% block Title %}
+Update
+{% endblock %}
+
+{% block Style %}
+    {% load static %}
+    <style>
+        .main-nav-bar{
+            flex-direction: column;
+        }
+        .menu-btn{
+            display: none;
+        }
+        .mainbox{
+            height: 90vh;
+            display: flex;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            
+        }
+        .nav-icon{
+            color: white;
+            text-decoration: none;
+        }
+        .scrl-box{
+            overflow-y: scroll;
+        }
+        .box{
+            min-height: 9vh;
+        }
+        .box input{
+            height: 100%;
+            overflow: hidden;
+            width: 100%;
+            background: none;
+            color: white;
+            font-size: 26px;
+            border: none;
+            border-bottom: 2px solid rgb(255, 102, 0);
+            background-color: black;
+            border-radius: 20px;
+        }
+
+        .btn-class{
+            border-radius: 15px;
+            background-color: white;
+            color: black;
+        }
+        @media (max-width:600px){
+            .main-nav-bar{
+                flex-direction: row;
+            }
+            .menu-btn{
+                display: inline;
+            }
+            .display-menu{
+                display: none;
+            }
+            .menu-icons-bar{
+                position: absolute;
+                top: 104%;
+                left: 0%;
+                backdrop-filter: blur(10px);
+                height: 95vh;
+                transition: 0.5s;
+                display: inline;
+            }
+            .nav-icon{
+                margin-top: 20px;
+                font-size: 25px;
+                margin-left: 20px;
+            }
+
+            .icon-box{
+                display: flex;
+                height: 80px;
+                align-items: center;
+            }
+            .box{
+                margin-left: 12px;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block Content %}
+    {% include 'Navbar.html' with Project=Project %}
+    <div class="mainbox">
+        <div class="col-12 col-md-8 row scrl-box d-inline" id="Editing">
+            <form action="" method="post" class="row ">
+                {% csrf_token %}
+                {% for item in Entry %}
+                    {% if item.entry == "DR" %}
+                        <div class="col-12 p-1 row box">
+                            <div class="col-7 ">
+                                <input class="ps-3" type="text" name="Name{{item.id}}" value="{{item.name}}">
+                            </div>
+                            <div class="col-5 ">
+                                <input class="ps-3" type="text" name="Amount{{item.id}}" value="{{item.amount}}">
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                <h2 class="text-center ms-4" ><b>TO</b></h2>
+                {% for item in Entry %}
+                    {% if item.entry == "CR" %}
+                        <div class="col-12 p-1 row box">
+                            <div class="col-7 ">
+                                <input class="ps-3" type="text" name="Name{{item.id}}" value="{{item.name}}">
+                            </div>
+                            <div class="col-5 ">
+                                <input class="ps-3" type="text" name="Amount{{item.id}}" value="{{item.amount}}">
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+                <div class="col-12 d-flex justify-content-center align-items-center">
+                    <button class="col-8 mt-3 btn-class p-1 ms-5"><h3>Create</h3></button>
+               </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block Script %}
+        <script>
+            function menubar(){
+                document.getElementById('menu_bar').className="menu-icons-bar"
+                document.getElementById('Editing').className="d-none"
+            }
+        </script>
+{% endblock %}

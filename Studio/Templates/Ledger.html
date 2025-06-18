@@ -17,7 +17,7 @@ Ledger
             height: 90vh;
         }
         .nav-icon{
-            color: black;
+            color: white;
             text-decoration: none;
         }
         .scrl-box{
@@ -29,8 +29,8 @@ Ledger
         }
         .sig-box{
             border-radius: 15px;
-            border: 2px solid green;
-            backdrop-filter: blur(10px);
+            border: 2px solid rgb(255, 115, 0);
+            background-color: black;;
         }
         @media (max-width:600px){
             .main-nav-bar{
@@ -53,7 +53,6 @@ Ledger
             }
             .nav-icon{
                 margin-top: 20px;
-                color: rgb(0, 0, 0);
                 font-size: 25px;
                 margin-left: 20px;
             }
@@ -86,7 +85,9 @@ Ledger
                         </div>
                     {% endfor %}
                 {% else %}
-                    <h3 class="ms-3 mt-5 pt-5">Data Is Not Founted <br>Please Enter Jornal Entry's</h3>
+                <div class="d-flex justify-content-center col-12" style="height: 80vh; align-items: center; overflow:hidden; ">
+                    <h2 class="text-center col-12">Data Is Not Founted <br>Please Enter Jornal Entry's</h2>
+                </div>
                 {% endif %}
             </div>
         </div>
