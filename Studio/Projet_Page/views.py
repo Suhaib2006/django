@@ -57,6 +57,7 @@ def Ledger_Page(request,Project):
             if item.name not in seen_name:
                 Ledgerdata.append(item)
             seen_name.add(item.name)
+
         Data={
             "Project":Project,
             "Ledger":Ledgerdata,
@@ -75,11 +76,10 @@ def TrialBalance_Page(request,Project):
         Tally=""
         for item in Trial:
             if item.state == "DR":
-                Drsum+=round(item.amount,2)
+                Drsum+=item.amount
             else:
-                Crsum+=round(item.amount,2)
-                
-        if Drsum == Crsum:
+                Crsum+=item.amount
+        if round(Drsum,2) == round(Crsum,2):
             Amount=Drsum
             Tally="Tally"
         else:
@@ -106,25 +106,26 @@ def Account_Page(request,Account,Project):
         Drsum=0
         Crsum=0
         Balance=0
-        State="-"
+        State=""
         for item in Entry:
-            if item.entry == "DR":
-                Drsum+=item.amount
+            if item.entry=="DR" and State=="":
+                State="DR"
+            elif item.entry=="CR" and State=="":
+                State="CR"
+            if item.entry==State:
+                Balance+=item.amount
+                DataInfo.objects.filter(pk=item.id).update(ledgerbalance=Balance)
             else:
-                Crsum+=item.amount
-        if Drsum>Crsum:
-            Balance=Drsum-Crsum
-            State="DR"
-        else:
-            Balance=Crsum-Drsum
-            State="CR"
+                Balance-=item.amount
+                DataInfo.objects.filter(pk=item.id).update(ledgerbalance=Balance)
+        Entry=project.Entrys.filter(name=Account).order_by("id")
         try:
             Data=project.Trials.get(name=Account)
-            Data.amount=Balance
+            Data.amount=round(Balance,2)
             Data.state=State
             Data.save()
         except:
-            project.Trials.create(project=project,name=Account,amount=Balance,state=State,order=Entry[0].id)
+            project.Trials.create(project=project,name=Account,amount=round(Balance,2),state=State,order=Entry[0].id)
         return render(request,'Ledgerview.html',{"Account":Account,"Data":Entry,"Balance":Balance,"State":State})
 
 def Delete_Page(request,Project,Code):

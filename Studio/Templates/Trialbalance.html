@@ -87,17 +87,20 @@ Trial Balance
                     </div>
                     <div class="row col-11 scrl-box box mt-2  justify-content-center ">
                             {% for obj in Trial %}
+                                {% if obj.amount != 0 %}
                                 <div class="col-12 sig-box row d-flex justify-content-center align-items-center">
                                     
                                     <div class="col-6 mt-1"><h4>{{obj.name}}</h4></div>
                                     {% if obj.state == "DR" %}
-                                        <div class="col-3 mt-1"><h4>{{obj.amount|floatformat:-1}}</h4></div>
+                                        <div class="col-3 mt-1"><h4>{{obj.amount|floatformat:-2}}</h4></div>
                                         <div class="col-3 mt-1"><h4></h4></div>
                                     {% else %}
                                         <div class="col-3 mt-1"><h4></h4></div>
-                                        <div class="col-3 mt-1"><h4>{{obj.amount|floatformat:-1}}</h4></div>
+                                        <div class="col-3 mt-1"><h4>{{obj.amount|floatformat:-2}}</h4></div>
                                     {% endif %}
                                 </div>
+                                {% endif %}
+
                             {% endfor %}
                     </div>
                     <div class="row col-11 box mt-2 d-flex justify-content-center align-items-center" style="height: 10vh;">

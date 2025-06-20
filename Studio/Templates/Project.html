@@ -165,7 +165,7 @@ Journal
                             {% if Code_id.code == Journal_obj.code %}
                                 {% if Journal_obj.entry == "DR" %}
                                     <div class="col-7"><h4> {{Journal_obj.name}} dr </h4></div>
-                                    <div class="col-4"><h4> {{Journal_obj.amount|floatformat:-1}} </h4></div>
+                                    <div class="col-4"><h4> {{Journal_obj.amount|floatformat:-2}} </h4></div>
                                     <div class="col-1"></div>
                                 {% endif %}
                             {% endif %}
@@ -175,7 +175,7 @@ Journal
                                 {% if Journal_obj.entry == "CR" %}
                                     <div class="col-1"></div>
                                     <div class="col-7"><h4> to {{Journal_obj.name}}  </h4></div>
-                                    <div class="col-4"><h4> {{Journal_obj.amount|floatformat:-1}} </h4></div>
+                                    <div class="col-4"><h4> {{Journal_obj.amount|floatformat:-2}} </h4></div>
                                 {% endif %}
                             {% endif %}
                         {% endfor %}  

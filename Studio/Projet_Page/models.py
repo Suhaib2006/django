@@ -8,6 +8,7 @@ class DataInfo(models.Model):
         amount=models.FloatField(default=float)
         entry=models.CharField(max_length=10)
         active=models.BooleanField(default=False)
+        ledgerbalance=models.FloatField(default=float)
 
 class CodeInfo(models.Model):
         project= models.ForeignKey(ProjectInfo, related_name="Codes", on_delete=models.CASCADE)
