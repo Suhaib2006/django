@@ -32,7 +32,17 @@ Ledger
             border: 2px solid rgb(255, 115, 0);
             background-color: black;;
         }
+        .img{
+            height: 30vh;
+            background-image: url("{% static 'images/sree.png' %}");
+            background-size: cover;
+            background-position: center;
+            
+        }
         @media (max-width:600px){
+            .phone{
+                display: none !important;
+            }
             .main-nav-bar{
                 flex-direction: row;
             }
@@ -68,7 +78,7 @@ Ledger
 
 {% block Content %}
     {% include 'Navbar.html' with Project=Project %}
-    <div class="mainbox col-12">
+    <div class="mainbox col-12 row">
         <div class="col-12 col-md-6 scrl-box" id="ledger">
             <div class=" row col-12" style="min-height: 10vh !important">
                 {% if Ledger %}
@@ -86,12 +96,16 @@ Ledger
                     {% endfor %}
                 {% else %}
                 <div class="d-flex justify-content-center col-12" style="height: 80vh; align-items: center; overflow:hidden; ">
-                    <h2 class="text-center col-12">Data Is Not Founted <br>Please Enter Jornal Entry's</h2>
+                    <h2 class="text-center col-12">Data Is Not Founted <br>Please Enter Jornal Entry's </h2>
                 </div>
                 {% endif %}
             </div>
         </div>
-        <div class="col-12 col-md-6"></div>
+        <div class="phone col-12 col-md-6 d-flex justify-content-center align-items-center flex-column">
+                <div class="img col-8">
+                </div>
+                <h3>Select you qustion paper</h3>
+        </div>
     </div>
 {% endblock %}
 

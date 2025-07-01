@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
 from .models import ProjectInfo 
 # Create your views here.
@@ -25,3 +25,12 @@ def Home_Page(request):
             "msg":msg,
         }
         return render(request,'Home.html',Data)
+
+def ProjectDelete(request,Project):
+    if request.user.is_authenticated:
+        name = request.user.username
+        user = User.objects.get(username=name)
+        Data=ProjectInfo.objects.get(user=user,project=Project)
+        Data.delete()
+        return redirect('Home')
+    

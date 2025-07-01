@@ -21,3 +21,11 @@ class TrialInfo(models.Model):
         state=models.CharField(max_length=10)
         order=models.IntegerField()
 
+class Questionpaper(models.Model):
+        project= models.ForeignKey(ProjectInfo, related_name="media", on_delete=models.CASCADE)
+        pdf= models.FileField(upload_to='Question/')
+        uploaded= models.BooleanField(False)
+
+        def delete(self):
+                self.pdf.delete()
+                super().delete()

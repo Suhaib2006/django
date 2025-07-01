@@ -20,7 +20,37 @@ Stock
             color: white;
             text-decoration: none;
         }
+        .uploading{
+            border-radius: 30px;
+            border: 2px solid white;
+            overflow: hidden;
+            width: 80%;
+        }
+        .uploading input{
+            height: 100%;
+        }
+        .btn-class{
+
+            border-radius: 15px;
+            background-color: black;
+            color: white;
+        }
+        .btn-class:hover{
+            background-color: orange;
+            color: white;
+        }
+        .img{
+            height: 30vh;
+            background-image: url("{% static 'images/sree.png' %}");
+            background-size: cover;
+            background-position: center;
+            
+        }
+        
         @media (max-width:600px){
+            .phone{
+                display: none !important;
+            }
             .main-nav-bar{
                 flex-direction: row;
             }
@@ -47,7 +77,8 @@ Stock
 
             .icon-box{
                 display: flex;
-                height: 80px;
+                height: 100vh;
+                width: 100%;
                 align-items: center;
             }
         }
@@ -55,11 +86,45 @@ Stock
 {% endblock %}
 
 {% block Content %}
+    {% load static %}
     {% include 'Navbar.html' with Project=Project %}
-    <div class="mainbox">
-        <div class="col-12 row" id="stock">
-            <h4>wqeqwe</h4>
+    <div class="mainbox row col-12">
+        <div class="col-12 col-md-6 d-flex justify-content-center col-12 align-items-center flex-column">
+        {% if Document %}
+            {% for doc in Document %}
+                <h2>{{doc.pdf.url}}</h2>
+                <embed src="/media/Question/demo.pdf" width="500" height="600" type="application/pdf">
+            {% endfor %}
+        {% else %}
+                <h2 class="text-center">Uploading You Project Question Paper</h2>
+        {% endif %}
         </div>
+        
+            {% if Document %}
+                {% for doc in Document %}
+                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center flex-column">   
+                    <div class="img col-8 phone"></div>
+                    <h3>your qustion paper alredy uplooad</h3>
+                    <div class="input-group input-file uploading">
+                    </div>
+                    <div class="col-12 p-2 d-flex justify-content-center align-items-center">
+                        <button class="btn-class col-5"><h4 class="mt-2"  onclick="Deletepdf('{{doc.id}}')">Delete</h4></button>
+                    </div>
+                </div>
+                {% endfor%}
+            {% else %}
+                <form method="post" enctype="multipart/form-data" class="col-12 col-md-6 d-flex justify-content-center align-items-center flex-column">
+                {% csrf_token %}
+                    <div class="img col-8 phone"></div>
+                    <h3>Select you qustion paper</h3>
+                    <div class="input-group input-file uploading">
+                        <input type="file" accept="application/pdf" name="pdf" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload" required>
+                    </div>
+                    <div class="col-12 p-2 d-flex justify-content-center align-items-center">
+                        <button class="btn-class col-5"><h4 class="mt-2" >Uploade</h4></button>
+                    </div>
+                </form>
+            {% endif %}
     </div>
 {% endblock %}
 
@@ -68,6 +133,9 @@ Stock
             function menubar(){
                 document.getElementById('menu_bar').className="menu-icons-bar"
                 document.getElementById('stock').className="d-none"
+            }
+            function Deletepdf(data){
+                window.location.href=`${data}/`;
             }
         </script>
 {% endblock %}

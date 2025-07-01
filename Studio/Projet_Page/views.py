@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from Home_Page.models import ProjectInfo
-from .models import DataInfo,CodeInfo,TrialInfo
+from .models import DataInfo,CodeInfo,TrialInfo,Questionpaper
 from django.contrib.auth.models import User
 # Create your views here.
 
@@ -94,7 +94,16 @@ def TrialBalance_Page(request,Project):
         return render(request,'Trialbalance.html',Data)
 
 def Stock_Page(request,Project):
-    return render(request,'Stock.html',{"Project":Project})
+    if request.user.is_authenticated:
+        name = request.user.username
+        user = User.objects.get(username=name)
+        project = ProjectInfo.objects.get(user=user,project=Project)
+        if request.POST:
+            pdf_file=request.FILES.get('pdf')
+            if pdf_file:
+                Questionpaper.objects.create(project=project,pdf=pdf_file,uploaded=True)
+        document=project.media.all()
+        return render(request,'Stock.html',{"Project":Project,"Document":document})
 
 def Account_Page(request,Account,Project):
     if request.user.is_authenticated:
@@ -161,3 +170,6 @@ def Editing_Page(request,Project,Code):
         return render(request,'Editing.html',{"Entry":Entry,"Project":Project})
 
         
+def PdfDeleted(request,Project,Code):   
+        Questionpaper.objects.get(pk=Code).delete()
+        return redirect('Stock',Project=Project)

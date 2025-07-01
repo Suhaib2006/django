@@ -17,12 +17,13 @@
             border-radius: 50px;
             border-right: 3px solid white;
         }
-        .btn-class{
+        .btn-class , .btn-Confirm:hover{
             border-radius: 15px;
             background-color: black;
             color: white;
         }
-        .btn-class:hover{
+        .btn-class:hover , .btn-Confirm{
+            border-radius: 15px;
             background-color: orange;
             color: white;
         }
@@ -43,13 +44,25 @@
             min-height: 25vh;
         }
         .uniquename{
+            position: relative;
             color: rgb(255, 255, 255);
             background-color: black;
             border: 2px solid orange;
             height: 100%;
             border-radius: 20px;
+            overflow: hidden;
         }
-        
+        .trash{
+            width: 40px;
+            height: 40px;
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            background-color: orange;
+            color:black;
+            z-index: 5;
+        }
+
         @media (max-width:600px){
             .Home_User{
                 height: 25vh;
@@ -100,18 +113,31 @@
                     {% if Project %}
                         <div id="ProjectNames" class="row">
                             {% for obj in User.Projects.all %}
-                                <div class="col-6 col-md-4 p-3  box-name"  onclick="GotoProjectPage('{{obj.project}}')">
-                                    <div class="uniquename d-flex  flex-column align-items-center">
+                                <div class="col-6 col-md-4 p-3  box-name "  onclick="GotoProjectPage('{{obj.project}}')">
+                                    <div class="uniquename p-2 d-flex justify-content-center flex-column align-items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="mt-3 bi bi-menu-button-wide-fill" viewBox="0 0 16 16">
                                             <path d="M1.5 0A1.5 1.5 0 0 0 0 1.5v2A1.5 1.5 0 0 0 1.5 5h13A1.5 1.5 0 0 0 16 3.5v-2A1.5 1.5 0 0 0 14.5 0zm1 2h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1 0-1m9.927.427A.25.25 0 0 1 12.604 2h.792a.25.25 0 0 1 .177.427l-.396.396a.25.25 0 0 1-.354 0zM0 8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm1 3v2a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2zm14-1V8a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v2zM2 8.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m0 4a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5"/>
                                         </svg>
                                         <h3 style="text-align: center;">{{obj.project}}</h3>
+                                        <div onclick="Delete('{{obj.project}}',event)" class="trash d-flex justify-content-center align-items-center">
+                                            <svg  xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                                            </svg>
+                                        </div>
                                     </div>
                                 </div>
                             {% endfor %}
                         </div>
                         <div class="d-none" id="ProjectNameCreate" style="height: 100%;">
                                 {% include 'CreateProject.html' %}
+                        </div>
+                        <div class="d-none" id="ProjectDelete" style="height: 100%;">
+                            <div style="background: none; backdrop-filter: blur(10px); height: 40vh;" class="uniquename p-4 d-flex justify-content-center flex-column ">
+                                <h2>Do you want to delete the following project?</h2>
+                                <h1 id="Project"></h1>
+                                <button class="col-5 btn-Confirm" onclick="DeleteProject()"><h3>Confirm</h3></button>
+                            </div>
                         </div>
                     {% else %}
                         {% include 'CreateProject.html' %}
@@ -129,12 +155,23 @@
             function ProjectNameCreate(){
                 document.getElementById('ProjectNameCreate').className=""
                 document.getElementById('ProjectNames').className="d-none"
+                document.getElementById('ProjectDelete').className="d-none"
             }
             function GotoLogoutPage(){
                 window.location.href='auth/logout';
             }
             function GotoProjectPage(project){
                 window.location.href=`Home/${project}/`;
+            }
+            function Delete(Data,event){
+                event.stopPropagation();
+                document.getElementById('ProjectNames').className="d-none"
+                document.getElementById('ProjectDelete').className="d-flex justify-content-center flex-column align-items-center"
+                document.getElementById('Project').innerHTML=Data
+            }
+            function DeleteProject(){
+                Data=document.getElementById('Project').innerText
+                window.location.href=`${Data}/`;
             }
         </script>
 {% endblock %}

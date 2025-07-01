@@ -7,4 +7,4 @@ urlpatterns = [
     path('auth/',include('Auth_Page.urls')),
     path('',include('Home_Page.urls')),
     path('Home/<str:Project>/',include('Projet_Page.urls')),
-]
+] 
