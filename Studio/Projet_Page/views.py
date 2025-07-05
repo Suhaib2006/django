@@ -126,6 +126,12 @@ def Account_Page(request,Account,Project):
                 DataInfo.objects.filter(pk=item.id).update(ledgerbalance=Balance)
             else:
                 Balance-=item.amount
+                if Balance<0:
+                    Balance*=(-1)
+                    if State=="DR":
+                        State="CR"
+                    else:
+                        State="DR"
                 DataInfo.objects.filter(pk=item.id).update(ledgerbalance=Balance)
         Entry=project.Entrys.filter(name=Account).order_by("id")
         try:
@@ -159,17 +165,35 @@ def Editing_Page(request,Project,Code):
         if request.POST:
             for item in Entry:
                 Name=request.POST.get(f"Name{item.id}").strip().lower()
-                Amount=float(request.POST.get(f"Amount{item.id}"))
-                if item.name != Name or item.amount != Amount:
-                    DataInfo.objects.filter(project=project,name=item.name).update(active=True)
-                    DataInfo.objects.filter(pk=item.id).update(name=Name,amount=Amount)
-                    DataInfo.objects.filter(project=project,name=Name).update(active=True)
-                    TrialInfo.objects.filter(name=Name).delete()
-                    TrialInfo.objects.filter(name=item.name).delete()
+                Amount=request.POST.get(f"Amount{item.id}")
+                if Name=="" or Amount=="":
+                    DataInfo.objects.filter(project=project,id=item.id).delete()
+                else:
+                    if item.name != Name or item.amount != Amount:
+                        DataInfo.objects.filter(project=project,name=item.name).update(active=True)
+                        DataInfo.objects.filter(pk=item.id).update(name=Name,amount=Amount)
+                        DataInfo.objects.filter(project=project,name=Name).update(active=True)
+                        TrialInfo.objects.filter(name=Name).delete()
+                        TrialInfo.objects.filter(name=item.name).delete()
+
             return redirect('Journal',Project=Project)
         return render(request,'Editing.html',{"Entry":Entry,"Project":Project})
 
         
 def PdfDeleted(request,Project,Code):   
-        Questionpaper.objects.get(pk=Code).delete()
-        return redirect('Stock',Project=Project)
+    Questionpaper.objects.get(pk=Code).delete()
+    return redirect('Stock',Project=Project)
+
+def AdditionalEntry(request,Project,Code): 
+    if request.user.is_authenticated:
+        name = request.user.username
+        user = User.objects.get(username=name)
+        project = ProjectInfo.objects.get(user=user,project=Project)  
+
+        if request.POST:
+            Name=request.POST.get("Name").strip().lower()
+            Amount=request.POST.get("Amount")
+            Entry=request.POST.get("Entry").strip().upper()
+            DataInfo.objects.create(project=project,code=Code,name=Name,amount=Amount,entry=Entry,active=True)
+            TrialInfo.objects.filter(project=project,name=Name).delete()
+        return redirect('Journal',Project=Project)

@@ -92,11 +92,11 @@ Stock
         <div class="col-12 col-md-6 d-flex justify-content-center col-12 align-items-center flex-column">
         {% if Document %}
             {% for doc in Document %}
-                <h2>{{doc.pdf.url}}</h2>
-                <embed src="/media/Question/demo.pdf" width="500" height="600" type="application/pdf">
+                <h3>Qustion Paper <a href="{{doc.pdf.url}}"> Click</a></h3>
+                <embed src="{{doc.pdf.url}}" width="500" height="600" type="application/pdf">
             {% endfor %}
         {% else %}
-                <h2 class="text-center">Uploading You Project Question Paper</h2>
+                <h3 class="text-center">Uploading You Project Question Paper</h2>
         {% endif %}
         </div>
         

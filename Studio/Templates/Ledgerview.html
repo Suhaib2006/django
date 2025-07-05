@@ -32,22 +32,23 @@
         <div class="row d-flex justify-content-center align-items-center" id="stock">
             <h2 class="col-10 text-capitalize box d-flex justify-content-center align-items-center" style="height: 10vh;"><b>{{Account}} ledger</b></h2>
             <div class="row col-10 d-flex justify-content-center align-items-center" >
-                <div class="col-4"><h3 class="ms-2">Dr</h3></div>
-                <div class="col-4"><h3>Cr</h3></div>
-                <div class="col-4"><h3>Balance</h3></div>
+                <div class="col-md-3 col-0"><h3>Perticular</h3></div>
+                <div class="col-md-3 col-4"><h3>Dr</h3></div>
+                <div class="col-md-3 col-4"><h3>Cr</h3></div>
+                <div class="col-md-3 col-4"><h3>Balance</h3></div>
             </div>
             <div class="row col-10 scrl-box box mt-2 d-flex justify-content-center ">
                 {% for obj in Data %}
                     <div class="col-12 mt-1 mb-1 sig-box row d-flex justify-content-center align-items-center">
-                       
+                        <div class="col-0 col-md-3"></div>
                         {% if obj.entry == "DR" %}
-                            <div class="col-4 mt-1"><h4>{{obj.amount|floatformat:-2}}</h4></div>
-                            <div class="col-4 mt-1"><h4>-</h4></div>
+                            <div class="col-md-3 col-4 mt-1"><h4>{{obj.amount|floatformat:-2}}</h4></div>
+                            <div class="col-md-3 col-4 mt-1"><h4>-</h4></div>
                         {% else %}
-                            <div class="col-4 mt-1"><h4>-</h4></div>
-                            <div class="col-4 mt-1"><h4>{{obj.amount|floatformat:-2}}</h4></div>
+                            <div class="col-md-3 col-4 mt-1"><h4>-</h4></div>
+                            <div class="col-md-3 col-4 mt-1"><h4>{{obj.amount|floatformat:-2}}</h4></div>
                         {% endif %}
-                        <div class="col-4"><h4>{{obj.ledgerbalance|floatformat:-2}}</h4></div>
+                        <div class="col-3"><h4>{{obj.ledgerbalance|floatformat:-2}}</h4></div>
                     </div>
                 {% endfor %}
             </div>
