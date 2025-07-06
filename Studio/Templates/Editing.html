@@ -94,10 +94,10 @@ Update
                     {% if item.entry == "DR" %}
                         <div class="col-12 p-1 row box">
                             <div class="col-7 ">
-                                <input class="ps-3" type="text" name="Name{{item.id}}" value="{{item.name}}">
+                                <input class="ps-3" step="0.01" type="text" name="Name{{item.id}}" value="{{item.name}}">
                             </div>
                             <div class="col-5 ">
-                                <input class="ps-3" type="number" name="Amount{{item.id}}" value="{{item.amount|floatformat:-2}}">
+                                <input class="ps-3" step="0.01" type="number" name="Amount{{item.id}}" value="{{item.amount|floatformat:-2}}">
                             </div>
                         </div>
                     {% endif %}
@@ -107,10 +107,10 @@ Update
                     {% if item.entry == "CR" %}
                         <div class="col-12 p-1 row box">
                             <div class="col-7 ">
-                                <input class="ps-3" type="text" name="Name{{item.id}}" value="{{item.name}}">
+                                <input class="ps-3" step="0.01" type="text" name="Name{{item.id}}" value="{{item.name}}">
                             </div>
                             <div class="col-5 ">
-                                <input class="ps-3" type="text" name="Amount{{item.id}}" value="{{item.amount|floatformat:-2}}">
+                                <input class="ps-3" step="0.01" type="number" name="Amount{{item.id}}" value="{{item.amount|floatformat:-2}}">
                             </div>
                         </div>
                     {% endif %}

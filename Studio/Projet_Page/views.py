@@ -169,7 +169,7 @@ def Editing_Page(request,Project,Code):
                 if Name=="" or Amount=="":
                     DataInfo.objects.filter(project=project,id=item.id).delete()
                 else:
-                    if item.name != Name or item.amount != Amount:
+                    if item.name != Name or item.amount != float(Amount):
                         DataInfo.objects.filter(project=project,name=item.name).update(active=True)
                         DataInfo.objects.filter(pk=item.id).update(name=Name,amount=Amount)
                         DataInfo.objects.filter(project=project,name=Name).update(active=True)
