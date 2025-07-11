@@ -26,6 +26,8 @@ def Home_Page(request):
         }
         return render(request,'Home.html',Data)
 
+    return render(request,'Login.html')
+
 def ProjectDelete(request,Project):
     if request.user.is_authenticated:
         name = request.user.username
