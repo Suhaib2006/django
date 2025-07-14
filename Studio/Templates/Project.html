@@ -125,9 +125,12 @@ Journal
 {% block Content %}
     {% include 'Navbar.html' with Project=Project %}
     <div class="mainbox col-12 row">
-        <div class="col-12 col-md-6 box right-journal p-4">
-           <h3 class="mb-3">{{User}} Enter your Entry's</h3>
+        <div class="col-12 col-md-6 box right-journal p-2">
             <form action="" method="post" class="row col-12 col-md-10 form-tag" id="Register" >
+            <h3 class="mb-3 col-7"><b>Journal Entry's</b></h3>
+            <div class="col-5 mb-2 input-area" style="height: 7vh;">
+                <input type="date" required name="Date" placeholder="Date" value="{{today}}">
+            </div>
             {% csrf_token %}
             {% for i in "1234" %}
                 <div class="col-8 input-area" >
@@ -137,7 +140,7 @@ Journal
                     <input class="focus-in form-control" type="number" step="0.01" name="Amount{{i}}" placeholder="Amount ">
                 </div>
             {% endfor %}
-                <h3 style="text-align: center;">To</h3>
+                <h3 style="text-align: center;"><b>To</b></h3>
             {% for i in "5678" %}
                 <div class="col-8 input-area">
                     <input class="focus-in form-control" type="text" name="Name{{i}}" placeholder="Name ac">

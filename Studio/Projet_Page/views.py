@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from Home_Page.models import ProjectInfo
 from .models import DataInfo,CodeInfo,TrialInfo,Questionpaper
 from django.contrib.auth.models import User
+from datetime import date
 # Create your views here.
 
 def Project_Page(request,Project):
@@ -31,6 +32,7 @@ def Project_Page(request,Project):
                     DataInfo.objects.filter(project=project,name=Name).update(active=True)
         Entrydata=project.Entrys.all()
         unique=project.Codes.all().order_by("-id")
+        today = date.today().isoformat()
         Codedata=[]
         seen_name=set()
         for item in unique:
@@ -42,7 +44,9 @@ def Project_Page(request,Project):
             "Project":Project,
             "Entry_data":Entrydata,
             "Code_data":Codedata,
+            "today": today
         }
+        print(today)
         return render(request,'Project.html',Data)
 
 def Ledger_Page(request,Project):
@@ -110,7 +114,7 @@ def Account_Page(request,Account,Project):
         name = request.user.username
         user = User.objects.get(username=name)
         project = ProjectInfo.objects.get(user=user,project=Project)
-        Entry=project.Entrys.filter(name=Account).order_by("id")
+        Entry=project.Entrys.filter(name=Account).order_by("code")
         DataInfo.objects.filter(project=project,name=Account).update(active=False)
         Drsum=0
         Crsum=0
