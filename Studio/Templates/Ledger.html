@@ -21,7 +21,7 @@ Ledger
             text-decoration: none;
         }
         .scrl-box{
-            height: 95%;
+            height: 100%;
             display: flex;
             align-items: center;
             flex-direction: column;
@@ -30,7 +30,7 @@ Ledger
         .sig-box{
             border-radius: 15px;
             border: 2px solid rgb(255, 115, 0);
-            background-color: black;;
+            background-color: rgb(48, 42, 42);;
         }
         .img{
             height: 30vh;
@@ -79,8 +79,8 @@ Ledger
 {% block Content %}
     {% include 'Navbar.html' with Project=Project %}
     <div class="mainbox col-12 row">
-        <div class="col-12 col-md-6 scrl-box" id="ledger">
-            <div class=" row col-12" style="min-height: 10vh !important">
+        <div class="col-12 col-md-5 scrl-box" id="ledger">
+            <div class=" row col-12" style="min-height: 11vh !important">
                 {% if Ledger %}
                     {% for item in Ledger %}
                         <div class="col-12 p-2 d-flex justify-content-center  align-items-center " onclick="GotoLedgerViewPage('{{item.name}}')" >
@@ -101,8 +101,8 @@ Ledger
                 {% endif %}
             </div>
         </div>
-        <div class="phone col-12 col-md-6 d-flex justify-content-center align-items-center flex-column">
-                <div class="img col-8">
+        <div class="phone col-12 col-md-7 d-flex justify-content-center align-items-center flex-column">
+                <div class="img col-5">
                 </div>
                 <h3>Select you qustion paper</h3>
         </div>
