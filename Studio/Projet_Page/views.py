@@ -30,7 +30,6 @@ def Project_Page(request,Project):
                     DataInfo.objects.create(project=project,code=Code,name=Name,amount=Amount,entry=Entry)
                     TrialInfo.objects.filter(project=project,name=Name).delete()
                     DataInfo.objects.filter(project=project,name=Name).update(active=True)
-<<<<<<< HEAD
         Entrydata=project.Entrys.all()
         unique=project.Codes.all().order_by("-id")
         today = date.today().isoformat()
@@ -40,11 +39,8 @@ def Project_Page(request,Project):
             if item.code not in seen_name:
                 Codedata.append(item)
             seen_name.add(item.code)
-=======
         Entrydata=project.Entrys.all().order_by("code","date")
         Codedata=project.Codes.all().order_by("-date","-code")
-        
->>>>>>> 6459bae (order and data change)
         Data={
             "User":name,
             "Project":Project,
@@ -143,11 +139,8 @@ def Account_Page(request,Account,Project):
                     else:
                         State="DR"
                 DataInfo.objects.filter(pk=item.id).update(ledgerbalance=Balance)
-<<<<<<< HEAD
         Entry=project.Entrys.filter(name=Account).order_by("id")
-=======
         Entry=project.Entrys.filter(name=Account).order_by("date","code")
->>>>>>> 6459bae (order and data change)
         try:
             Data=project.Trials.get(name=Account)
             Data.amount=round(Balance,2)
