@@ -127,11 +127,19 @@ Journal
     <div class="mainbox col-12 row">
         <div class="col-12 col-md-6 box right-journal p-2">
             <form action="" method="post" class="row col-12 col-md-10 form-tag" id="Register" >
+<<<<<<< HEAD
             <h3 class="mb-3 col-7"><b>Journal Entry's</b></h3>
             <div class="col-5 mb-2 input-area" style="height: 7vh;">
                 <input type="date" required name="Date" placeholder="Date" value="{{today}}">
             </div>
             {% csrf_token %}
+=======
+                {% csrf_token %}
+                <h3 class=" col-7"><b>Journal Entry's</b></h3>
+                <div class="col-5  mb-3 input-area" style="height: 7.5vh;">
+                    <input type="date" required name="Date" placeholder="Date" value="{{Date}}">
+                </div>
+>>>>>>> 2a13549 (date feild function and datebasechage)
             {% for i in "1234" %}
                 <div class="col-8 input-area" >
                     <input class="focus-in form-control" type="text" name="Name{{i}}" placeholder="Name ac" onclick="m()">
@@ -151,7 +159,7 @@ Journal
             {% endfor %} 
             <div class="col-12 p-0" style="display: flex; justify-content: space-between; align-items: center;">
                 <div class="col-5 mt-3 input-area" style="height: 8vh;">
-                    <input type="text form-control" required name="Code" placeholder="Code">
+                    <input type="number form-control" required name="Code" placeholder="Code">
                 </div>
                 <button class="col-5 mt-3 item-btn">
                     <h4>Submit</h4>
@@ -183,7 +191,8 @@ Journal
                             {% endif %}
                         {% endfor %}  
                         <br> <br>
-                        <div class="col-8" style="color: rgb(136, 131, 122);"><h4>manage your data</h4></div>
+                        <div class="col-5" style="color: rgb(136, 131, 122);"><h4>{{Code_id.date}}</h4></div>
+                        <div class="col-3" style="color: rgb(136, 131, 122);"><h4>{{Code_id.code}}</h4></div>
                         <div class="col-4" style="display: flex; justify-content: space-between;">
                             <svg style="color: rgb(136, 131, 122);" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16" onclick="deleteconfirm('{{Code_id.code}}')">
                                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
@@ -238,11 +247,23 @@ Journal
                 </form>
             </div>
         </div>
+
+
+        {% if codeactive %}
+            <div class="position-absolute col-md-12" id="Alertdiv">
+                <div class="alert alert-danger" role="alert">
+                    <h3>{{codeactive}}</h3>
+                </div>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}
 
 {% block Script %}
         <script>
+            setTimeout(function() {
+                document.getElementById("Alertdiv").style.display = "none";
+            }, 2500);
             function menubar(){
                 document.getElementById('menu_bar').className="menu-icons-bar"
                 document.getElementById('scrl-box').className="d-none"
