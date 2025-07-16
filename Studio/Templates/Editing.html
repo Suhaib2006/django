@@ -40,7 +40,7 @@ Update
             border: none;
             border-bottom: 2px solid rgb(255, 102, 0);
             background-color: black;
-            border-radius: 20px;
+            border-radius: 10px;
         }
 
         .btn-class{
@@ -48,7 +48,30 @@ Update
             background-color: white;
             color: black;
         }
+        .input-area{
+            height: 9vh;
+            overflow: hidden;
+            padding: 2px;
+            margin-top: 10px;
+        }
+        .input-area input{
+            background: transparent;
+            height: 100%;
+            width: 100%;
+            border-radius: 10px;
+            font-size: 35px;
+            padding-left: 5px;
+            overflow: hidden;
+            color:white;
+            border: 2px solid rgb(255, 102, 0);
+        }
         @media (max-width:600px){
+            .input-area{
+                margin-left:25px
+            }
+            .input-area input{
+                font-size: 25px;
+            }
             .main-nav-bar{
                 flex-direction: row;
             }
@@ -87,9 +110,12 @@ Update
 {% block Content %}
     {% include 'Navbar.html' with Project=Project %}
     <div class="mainbox">
-        <div class="col-12 col-md-8 row scrl-box d-inline" id="Editing">
+        <div class="col-12 col-md-7 row scrl-box d-inline" id="Editing">
             <form action="" method="post" class="row ">
                 {% csrf_token %}
+                <div class="col-md-4 col-5  mb-3 ms- input-area">
+                    <input type="date" required name="Date" placeholder="Date" value="{{Date}}">
+                </div>
                 {% for item in Entry %}
                     {% if item.entry == "DR" %}
                         <div class="col-12 p-1 row box">
@@ -121,6 +147,9 @@ Update
                </div>
             </form>
         </div>
+
+
+        
     </div>
 {% endblock %}
 

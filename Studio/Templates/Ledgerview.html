@@ -40,7 +40,7 @@
             <div class="row col-10 scrl-box box mt-2 d-flex justify-content-center ">
                 {% for obj in Data %}
                     <div class="col-12 mt-1 mb-1 sig-box row d-flex justify-content-center align-items-center">
-                        <div class="col-0 col-md-3"></div>
+                        <div class="col-0 col-md-3"><h4>{{obj.date}}</h4></div>
                         {% if obj.entry == "DR" %}
                             <div class="col-md-3 col-4 mt-1"><h4>{{obj.amount|floatformat:-2}}</h4></div>
                             <div class="col-md-3 col-4 mt-1"><h4>-</h4></div>

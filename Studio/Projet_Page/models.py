@@ -1,5 +1,6 @@
 from django.db import models
 from Home_Page.models import ProjectInfo
+from django.utils import timezone
 # Create your models here.
 class DataInfo(models.Model):
         project= models.ForeignKey(ProjectInfo, related_name="Entrys", on_delete=models.CASCADE)
@@ -9,10 +10,12 @@ class DataInfo(models.Model):
         entry=models.CharField(max_length=10)
         active=models.BooleanField(default=False)
         ledgerbalance=models.FloatField(default=float)
+        date = models.DateField(default=timezone.now)
 
 class CodeInfo(models.Model):
         project= models.ForeignKey(ProjectInfo, related_name="Codes", on_delete=models.CASCADE)
         code=models.CharField(max_length=50)
+        date = models.DateField(default=timezone.now)
 
 class TrialInfo(models.Model):
         project= models.ForeignKey(ProjectInfo, related_name="Trials", on_delete=models.CASCADE)

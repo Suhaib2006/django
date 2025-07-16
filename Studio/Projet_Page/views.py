@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from Home_Page.models import ProjectInfo
 from .models import DataInfo,CodeInfo,TrialInfo,Questionpaper
 from django.contrib.auth.models import User
+from datetime import date
 # Create your views here.
 
 def Project_Page(request,Project):
@@ -9,39 +10,44 @@ def Project_Page(request,Project):
         name = request.user.username
         user = User.objects.get(username=name)
         project = ProjectInfo.objects.get(user=user,project=Project)
+        Date=date.today().isoformat()
+        error_msg=None
         if request.POST:
             Code=request.POST.get("Code").strip().upper()
-            CodeInfo.objects.create(project=project,code=Code)
-
+            Create_date=request.POST.get("Date")
+            Date=Create_date
+            try:
+                project.Codes.get(code=Code)
+                error_msg= 'alerdy exist code'
+            except:
+                CodeInfo.objects.create(project=project,code=Code,date=Create_date)
             for i in range(1,5):
                 if request.POST.get(f"Name{i}").strip():
                     Name=request.POST.get(f"Name{i}").strip().lower()
                     Amount=request.POST.get(f"Amount{i}")
                     Entry="DR"
-                    DataInfo.objects.create(project=project,code=Code,name=Name,amount=Amount,entry=Entry)
+                    DataInfo.objects.create(project=project,code=Code,name=Name,amount=Amount,entry=Entry,date=Create_date)
                     TrialInfo.objects.filter(project=project,name=Name).delete()
                     DataInfo.objects.filter(project=project,name=Name).update(active=True)
+                    
             for i in range(5,9):
                 if request.POST.get(f"Name{i}").strip():
                     Name=request.POST.get(f"Name{i}").strip().lower()
                     Amount=request.POST.get(f"Amount{i}")
                     Entry="CR"
-                    DataInfo.objects.create(project=project,code=Code,name=Name,amount=Amount,entry=Entry)
+                    DataInfo.objects.create(project=project,code=Code,name=Name,amount=Amount,entry=Entry,date=Create_date)
                     TrialInfo.objects.filter(project=project,name=Name).delete()
                     DataInfo.objects.filter(project=project,name=Name).update(active=True)
-        Entrydata=project.Entrys.all()
-        unique=project.Codes.all().order_by("-id")
-        Codedata=[]
-        seen_name=set()
-        for item in unique:
-            if item.code not in seen_name:
-                Codedata.append(item)
-            seen_name.add(item.code)
+        Entrydata=project.Entrys.all().order_by("-date","id")
+        Codedata=project.Codes.all().order_by("-date","-id")
+        
         Data={
             "User":name,
             "Project":Project,
             "Entry_data":Entrydata,
             "Code_data":Codedata,
+            "Date":Date,
+            "codeactive":error_msg,
         }
         return render(request,'Project.html',Data)
 
@@ -133,7 +139,7 @@ def Account_Page(request,Account,Project):
                     else:
                         State="DR"
                 DataInfo.objects.filter(pk=item.id).update(ledgerbalance=Balance)
-        Entry=project.Entrys.filter(name=Account).order_by("id")
+        Entry=project.Entrys.filter(name=Account).order_by("date","id")
         try:
             Data=project.Trials.get(name=Account)
             Data.amount=round(Balance,2)
@@ -162,13 +168,20 @@ def Editing_Page(request,Project,Code):
         user = User.objects.get(username=name)
         project = ProjectInfo.objects.get(user=user,project=Project)
         Entry=project.Entrys.filter(code=Code)
+        Date=project.Codes.get(code=Code)
+        Date=Date.date.strftime('%Y-%m-%d')
         if request.POST:
+            update_Date=request.POST.get("Date")
             for item in Entry:
                 Name=request.POST.get(f"Name{item.id}").strip().lower()
                 Amount=request.POST.get(f"Amount{item.id}")
                 if Name=="" or Amount=="":
                     DataInfo.objects.filter(project=project,id=item.id).delete()
+                    TrialInfo.objects.filter(name=item.name).delete()
+                    DataInfo.objects.filter(project=project,name=item.name).update(active=True)
                 else:
+                    DataInfo.objects.filter(pk=item.id).update(date=update_Date)
+                    CodeInfo.objects.filter(code=item.code).update(date=update_Date)
                     if item.name != Name or item.amount != float(Amount):
                         DataInfo.objects.filter(project=project,name=item.name).update(active=True)
                         DataInfo.objects.filter(pk=item.id).update(name=Name,amount=Amount)
@@ -177,7 +190,7 @@ def Editing_Page(request,Project,Code):
                         TrialInfo.objects.filter(name=item.name).delete()
 
             return redirect('Journal',Project=Project)
-        return render(request,'Editing.html',{"Entry":Entry,"Project":Project})
+        return render(request,'Editing.html',{"Entry":Entry,"Project":Project,"Date":Date})
 
         
 def PdfDeleted(request,Project,Code):   
@@ -191,9 +204,11 @@ def AdditionalEntry(request,Project,Code):
         project = ProjectInfo.objects.get(user=user,project=Project)  
 
         if request.POST:
+            Date=project.Codes.get(code=Code)
             Name=request.POST.get("Name").strip().lower()
             Amount=request.POST.get("Amount")
             Entry=request.POST.get("Entry").strip().upper()
-            DataInfo.objects.create(project=project,code=Code,name=Name,amount=Amount,entry=Entry,active=True)
-            TrialInfo.objects.filter(project=project,name=Name).delete()
+            project.Entrys.create(project=project,code=Code,name=Name,amount=Amount,entry=Entry,active=True,date=Date.date)
+            project.Trials.filter(project=project,name=Name).delete()
+            project.Entrys.filter(name=Name).update(active=True)
         return redirect('Journal',Project=Project)
