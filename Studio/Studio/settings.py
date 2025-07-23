@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'Auth_Page',
     'Home_Page',
     'Projet_Page',
+    'Pdf_Page'
 ]
 
 MIDDLEWARE = [

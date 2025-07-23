@@ -22,7 +22,7 @@ def Project_Page(request,Project):
             except:
                 CodeInfo.objects.create(project=project,code=Code,date=Create_date)
             for i in range(1,5):
-                if request.POST.get(f"Name{i}").strip():
+                if request.POST.get(f"Name{i}").strip() and request.POST.get(f"Amount{i}"):
                     Name=request.POST.get(f"Name{i}").strip().lower()
                     Amount=request.POST.get(f"Amount{i}")
                     Entry="DR"
@@ -31,7 +31,7 @@ def Project_Page(request,Project):
                     DataInfo.objects.filter(project=project,name=Name).update(active=True)
                     
             for i in range(5,9):
-                if request.POST.get(f"Name{i}").strip():
+                if request.POST.get(f"Name{i}").strip() and request.POST.get(f"Amount{i}"):
                     Name=request.POST.get(f"Name{i}").strip().lower()
                     Amount=request.POST.get(f"Amount{i}")
                     Entry="CR"
@@ -39,7 +39,7 @@ def Project_Page(request,Project):
                     TrialInfo.objects.filter(project=project,name=Name).delete()
                     DataInfo.objects.filter(project=project,name=Name).update(active=True)
         Entrydata=project.Entrys.all().order_by("code","date")
-        Codedata=project.Codes.all().order_by("-date","-code")
+        Codedata=project.Codes.all().order_by("-date","-id","-code")
         
         Data={
             "User":name,
@@ -116,7 +116,7 @@ def Account_Page(request,Account,Project):
         name = request.user.username
         user = User.objects.get(username=name)
         project = ProjectInfo.objects.get(user=user,project=Project)
-        Entry=project.Entrys.filter(name=Account).order_by("id")
+        Entry=project.Entrys.filter(name=Account).order_by("date","id","code")
         DataInfo.objects.filter(project=project,name=Account).update(active=False)
         Drsum=0
         Crsum=0
@@ -139,7 +139,7 @@ def Account_Page(request,Account,Project):
                     else:
                         State="DR"
                 DataInfo.objects.filter(pk=item.id).update(ledgerbalance=Balance)
-        Entry=project.Entrys.filter(name=Account).order_by("date","code")
+        Entry=project.Entrys.filter(name=Account).order_by("date","id","code")
         try:
             Data=project.Trials.get(name=Account)
             Data.amount=round(Balance,2)

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        td{
+            text-transform: capitalize;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .number{
+            font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif !important;
+        }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+    <div class=" pt-0 p-4 border border-2 border-top-0 border-bottom-0 border-danger" >
+        <div class="h4 p-0 pb-2 mb-4 text-success border-bottom border-top border-danger">
+            <h2 class="text-uppercase col-12 text-center mt-3">{{Project}} TrialBalance</h2>
+        </div>
+            <div class="row col-12 text-danger mt-3 border-bottom border-2" >
+                <div class="col-6"><h4><b>PERTICULAR</b></h4></div>
+                <div class="col-3"><h4><b>DR</b></h4></div>
+                <div class="col-3"><h4><b>CR</b></h4></div>
+            </div>
+            {% for item in TrialData %}
+                {% if item.amount != 0 %}
+                <div class="row col-12 border-bottom border-gray">
+                    <div class="col-6 text-capitalize number"><h4>{{item.name}}</h4></div>
+                    {% if item.state == "DR" %}
+                        <div class="col-3 number" ><h4>{{item.amount}}</h4></div>
+                        <div class="col-3"><h4>-</h4></div>
+                    {% else %}
+                        <div class="col-3"><h4>-</h4></div>
+                        <div class="col-3 number"><h4>{{item.amount}}</h4></div>
+                    {% endif %}
+                </div>
+                {% endif %}
+            {% endfor %}
+
+            <div class="row h4 pb-2 pt-2 mb-4 text-gray border-bottom border-top border-danger">
+                <div class="col-6 number"><h4><b>Tally</b></h4></div>
+                <div class="col-3 number"><h4><b>{{Tally}}</b></h4></div>
+                <div class="col-3 number"><h4><b>{{Tally}}</b></h4></div>
+            </div>
+        </div>  
+</body>
+</html>

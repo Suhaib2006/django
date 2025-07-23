@@ -11,11 +11,17 @@ class DataInfo(models.Model):
         active=models.BooleanField(default=False)
         ledgerbalance=models.FloatField(default=float)
         date = models.DateField(default=timezone.now)
+        
+        def __str__(self):
+                return self.name
 
 class CodeInfo(models.Model):
         project= models.ForeignKey(ProjectInfo, related_name="Codes", on_delete=models.CASCADE)
         code=models.CharField(max_length=50)
         date = models.DateField(default=timezone.now)
+
+        def __str__(self):
+                return self.code
 
 class TrialInfo(models.Model):
         project= models.ForeignKey(ProjectInfo, related_name="Trials", on_delete=models.CASCADE)
@@ -23,6 +29,9 @@ class TrialInfo(models.Model):
         amount=models.FloatField()
         state=models.CharField(max_length=10)
         order=models.IntegerField()
+
+        def __str__(self):
+                return self.name
 
 class Questionpaper(models.Model):
         project= models.ForeignKey(ProjectInfo, related_name="media", on_delete=models.CASCADE)
