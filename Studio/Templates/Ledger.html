@@ -29,10 +29,10 @@ Ledger
         }
         .sig-box{
             border-radius: 15px;
-            border: 2px solid rgb(255, 115, 0);
+            border: 2px solid rgb(228, 227, 227);
             background-color: rgb(48, 42, 42);
             text-transform: capitalize;
-            min-height: 5vh !important;
+            transition: 0.5s;
         }
         .imgbox{
             height: 90vh;
@@ -42,6 +42,42 @@ Ledger
             background-image: url("{% static 'images/sree.png' %}");
             background-size: cover;
             background-position: center;
+        }
+
+        .ledger{
+            min-height: 55vh;
+            overflow-y: scroll;
+        }
+        .box{
+            backdrop-filter: blur(80px);
+            color: rgb(250, 6, 6);
+            border-radius: 20px;
+            border: 2px solid gray;
+        }
+        .ledger-sig{
+            text-transform: capitalize;
+            max-height: 50px;
+            margin-top: 4px;
+            margin-bottom: 4px;
+            color: rgb(255, 255, 255);
+        }
+        .ledger-sig h5{
+            border-bottom: 2px solid white;
+        }
+        .activeName{
+            margin-left: 45px !important;
+            transition: 0.4s;
+            transform: scale(1.05);
+            background-color: rgb(168, 168, 168);
+            color:black;
+        }
+        .TableIn{
+            transform: scale(1);
+            transition: 0.6s;
+        }
+        .TableOut{
+            transform: scale(0);
+            position: absolute;
         }
         @media (max-width:600px){
             .phone{
@@ -87,16 +123,20 @@ Ledger
             <div class=" row col-12">
                 {% if Ledger %}
                     {% for item in Ledger %}
-                        <div class="col-12 p-2 d-flex justify-content-center  align-items-center " onclick="GotoLedgerViewPage('{{item.name}}')" >
-                            <div class="sig-box d-flex justify-content-between p-2  align-items-center col-10" >
+                        {% if item.name != "balance" %}
+                        <div class="col-12 p-2 d-flex justify-content-center  align-items-center ">
+                            <div id="{{item.id}}" class="sig-box d-flex justify-content-between p-2  align-items-center col-10"  onclick="GotoLedgerViewPage('{{item.name}}','{{Project}}','{{item.id}}')" >
                                 <h4 class="col-10 mt-2">{{item.name}} a/c</h4>
-                                {% if item.active %}
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="col-2 bi bi-plus-square-dotted" viewBox="0 0 16 16">
-                                        <path d="M2.5 0q-.25 0-.487.048l.194.98A1.5 1.5 0 0 1 2.5 1h.458V0zm2.292 0h-.917v1h.917zm1.833 0h-.917v1h.917zm1.833 0h-.916v1h.916zm1.834 0h-.917v1h.917zm1.833 0h-.917v1h.917zM13.5 0h-.458v1h.458q.151 0 .293.029l.194-.981A2.5 2.5 0 0 0 13.5 0m2.079 1.11a2.5 2.5 0 0 0-.69-.689l-.556.831q.248.167.415.415l.83-.556zM1.11.421a2.5 2.5 0 0 0-.689.69l.831.556c.11-.164.251-.305.415-.415zM16 2.5q0-.25-.048-.487l-.98.194q.027.141.028.293v.458h1zM.048 2.013A2.5 2.5 0 0 0 0 2.5v.458h1V2.5q0-.151.029-.293zM0 3.875v.917h1v-.917zm16 .917v-.917h-1v.917zM0 5.708v.917h1v-.917zm16 .917v-.917h-1v.917zM0 7.542v.916h1v-.916zm15 .916h1v-.916h-1zM0 9.375v.917h1v-.917zm16 .917v-.917h-1v.917zm-16 .916v.917h1v-.917zm16 .917v-.917h-1v.917zm-16 .917v.458q0 .25.048.487l.98-.194A1.5 1.5 0 0 1 1 13.5v-.458zm16 .458v-.458h-1v.458q0 .151-.029.293l.981.194Q16 13.75 16 13.5M.421 14.89c.183.272.417.506.69.689l.556-.831a1.5 1.5 0 0 1-.415-.415zm14.469.689c.272-.183.506-.417.689-.69l-.831-.556c-.11.164-.251.305-.415.415l.556.83zm-12.877.373Q2.25 16 2.5 16h.458v-1H2.5q-.151 0-.293-.029zM13.5 16q.25 0 .487-.048l-.194-.98A1.5 1.5 0 0 1 13.5 15h-.458v1zm-9.625 0h.917v-1h-.917zm1.833 0h.917v-1h-.917zm1.834-1v1h.916v-1zm1.833 1h.917v-1h-.917zm1.833 0h.917v-1h-.917zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
-                                    </svg>
-                                {% endif %}
+                                <div id="Active_{{item.id}}" class="col-2">
+                                    {% if item.active %}
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-plus-square-dotted" viewBox="0 0 16 16">
+                                            <path d="M2.5 0q-.25 0-.487.048l.194.98A1.5 1.5 0 0 1 2.5 1h.458V0zm2.292 0h-.917v1h.917zm1.833 0h-.917v1h.917zm1.833 0h-.916v1h.916zm1.834 0h-.917v1h.917zm1.833 0h-.917v1h.917zM13.5 0h-.458v1h.458q.151 0 .293.029l.194-.981A2.5 2.5 0 0 0 13.5 0m2.079 1.11a2.5 2.5 0 0 0-.69-.689l-.556.831q.248.167.415.415l.83-.556zM1.11.421a2.5 2.5 0 0 0-.689.69l.831.556c.11-.164.251-.305.415-.415zM16 2.5q0-.25-.048-.487l-.98.194q.027.141.028.293v.458h1zM.048 2.013A2.5 2.5 0 0 0 0 2.5v.458h1V2.5q0-.151.029-.293zM0 3.875v.917h1v-.917zm16 .917v-.917h-1v.917zM0 5.708v.917h1v-.917zm16 .917v-.917h-1v.917zM0 7.542v.916h1v-.916zm15 .916h1v-.916h-1zM0 9.375v.917h1v-.917zm16 .917v-.917h-1v.917zm-16 .916v.917h1v-.917zm16 .917v-.917h-1v.917zm-16 .917v.458q0 .25.048.487l.98-.194A1.5 1.5 0 0 1 1 13.5v-.458zm16 .458v-.458h-1v.458q0 .151-.029.293l.981.194Q16 13.75 16 13.5M.421 14.89c.183.272.417.506.69.689l.556-.831a1.5 1.5 0 0 1-.415-.415zm14.469.689c.272-.183.506-.417.689-.69l-.831-.556c-.11.164-.251.305-.415.415l.556.83zm-12.877.373Q2.25 16 2.5 16h.458v-1H2.5q-.151 0-.293-.029zM13.5 16q.25 0 .487-.048l-.194-.98A1.5 1.5 0 0 1 13.5 15h-.458v1zm-9.625 0h.917v-1h-.917zm1.833 0h.917v-1h-.917zm1.834-1v1h.916v-1zm1.833 1h.917v-1h-.917zm1.833 0h.917v-1h-.917zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+                                        </svg>
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
+                        {% endif %}
                     {% endfor %}
                 {% else %}
                 <div class="d-flex justify-content-center col-12" style="height: 80vh; align-items: center; overflow:hidden; ">
@@ -107,19 +147,44 @@ Ledger
         </div>
         <div class="phone col-12 col-md-7 d-flex justify-content-center align-items-center flex-column">
             <div class="text-start col-10">
-                <h2 style="color: orange;"><b>Ledger Account's</b></h2>
-                <h4 style="color: rgb(224, 224, 224);" class="text-center">A ledger account is a record of all trasactions related to a specific account in a business.It is part of the general ledger, which contains all financial data used to prepare the company's financial statement</h4>
-                <br>
-                <h4 style="color: rgb(224, 224, 224);" class="mb-2">Do you wish to get your current ledger statement? yes, please click below (Currentll wisite all ac)</h4>
-                <button type="button" class="ms-1 rounded-5 btn btn-danger col-3 row" onclick="Ledgerpdf('{{Project}}')">
-                    <h4 class="">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-filetype-pdf " viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M14 4.5V14a2 2 0 0 1-2 2h-1v-1h1a1 1 0 0 0 1-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5zM1.6 11.85H0v3.999h.791v-1.342h.803q.43 0 .732-.173.305-.175.463-.474a1.4 1.4 0 0 0 .161-.677q0-.375-.158-.677a1.2 1.2 0 0 0-.46-.477q-.3-.18-.732-.179m.545 1.333a.8.8 0 0 1-.085.38.57.57 0 0 1-.238.241.8.8 0 0 1-.375.082H.788V12.48h.66q.327 0 .512.181.185.183.185.522m1.217-1.333v3.999h1.46q.602 0 .998-.237a1.45 1.45 0 0 0 .595-.689q.196-.45.196-1.084 0-.63-.196-1.075a1.43 1.43 0 0 0-.589-.68q-.396-.234-1.005-.234zm.791.645h.563q.371 0 .609.152a.9.9 0 0 1 .354.454q.118.302.118.753a2.3 2.3 0 0 1-.068.592 1.1 1.1 0 0 1-.196.422.8.8 0 0 1-.334.252 1.3 1.3 0 0 1-.483.082h-.563zm3.743 1.763v1.591h-.79V11.85h2.548v.653H7.896v1.117h1.606v.638z"/>
-                        </svg>
-                        PDF
-                    </h4>
-                </button>   
-                         
+                <!----pdf--->
+
+                <div class="" id="pdfloder">
+                    <h2 style="color: orange;"><b>Ledger Account's</b></h2>
+                    <h4 style="color: rgb(224, 224, 224);" class="text-center">A ledger account is a record of all trasactions related to a specific account in a business.It is part of the general ledger, which contains all financial data used to prepare the company's financial statement</h4>
+                    <br>
+                    <h4 style="color: rgb(224, 224, 224);" class="mb-2">Do you wish to get your current ledger statement? yes, please click below (Currentll wisite all ac)</h4>
+                    <button type="button" class="ms-1 rounded-5 btn btn-danger col-3 row" onclick="Ledgerpdf('{{Project}}')">
+                        <h4 class="">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-filetype-pdf " viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M14 4.5V14a2 2 0 0 1-2 2h-1v-1h1a1 1 0 0 0 1-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5zM1.6 11.85H0v3.999h.791v-1.342h.803q.43 0 .732-.173.305-.175.463-.474a1.4 1.4 0 0 0 .161-.677q0-.375-.158-.677a1.2 1.2 0 0 0-.46-.477q-.3-.18-.732-.179m.545 1.333a.8.8 0 0 1-.085.38.57.57 0 0 1-.238.241.8.8 0 0 1-.375.082H.788V12.48h.66q.327 0 .512.181.185.183.185.522m1.217-1.333v3.999h1.46q.602 0 .998-.237a1.45 1.45 0 0 0 .595-.689q.196-.45.196-1.084 0-.63-.196-1.075a1.43 1.43 0 0 0-.589-.68q-.396-.234-1.005-.234zm.791.645h.563q.371 0 .609.152a.9.9 0 0 1 .354.454q.118.302.118.753a2.3 2.3 0 0 1-.068.592 1.1 1.1 0 0 1-.196.422.8.8 0 0 1-.334.252 1.3 1.3 0 0 1-.483.082h-.563zm3.743 1.763v1.591h-.79V11.85h2.548v.653H7.896v1.117h1.606v.638z"/>
+                            </svg>
+                            PDF
+                        </h4>
+                    </button> 
+                </div>
+                <!----table--->
+
+                <div class=" row d-flex justify-content-center" id="Table">
+                    <h3 id="LedgerName" class="mt-3 col-12 text-capitalize box d-flex justify-content-center align-items-center text-center" style="height: 10vh; font-weight: 700;"> </h3>
+                    <div class="row col-12 d-flex justify-content-center align-items-center" >
+                        <div class="col-2"><h4>Date</h4></div>
+                        <div class="col-1"><h4>#</h4></div>
+                        <div class="col-3"><h4>Dr</h4></div>
+                        <div class="col-3"><h4>Cr</h4></div>
+                        <div class="col-3"><h4>Balance</h4></div>
+                    </div>
+                    <div class="row col-12 ledger box mt-2 justify-content-center ">
+                        <div class="col-12 ledger-sig mt-2 row align-items-center" id="boxview">
+                            <!--js fction loading-->
+                        </div>
+                    </div>
+                    <div class="row col-12 box mt-2 d-flex justify-content-center align-items-center" style="height: 10vh; color: white;">
+                        <div class="col-4"><h3>Balance</h3></div>
+                        <div class="col-6 text-center"><h3 id="Balance"></h3></div>
+                        <div class="col-2 text-center"><h3 id="State"></h3></div>
+                    </div>
+                </div>
             </div> 
         </div>
     </div>
@@ -127,15 +192,74 @@ Ledger
 
 {% block Script %}
         <script>
+            localStorage.removeItem("ID",null)
+            document.getElementById('Table').classList.add("TableOut")
             function menubar(){
                 document.getElementById('menu_bar').className="menu-icons-bar"
-                document.getElementById('ledger').className="d-none"
+                document.getElementById('ledger').classList.add("d-none")
+                document.getElementById('ledger').classList.remove("d-none")
+                
             }
-            function GotoLedgerViewPage(Account){
-                window.location.href=`${Account}/`;
+            function GotoLedgerViewPage(Account,Project,ID){
+                st=localStorage.getItem("ID")
+                if (st){
+                    document.getElementById(st).classList.remove("activeName")
+                }
+                appediv=document.getElementById('boxview')
+                Balance=200
+                State=""
+                localStorage.setItem("ID",ID)
+                document.getElementById('LedgerName').innerText=`${Account} a/c `
+                if(st!=ID){
+                    document.getElementById("pdfloder").classList.add("d-none")
+                    document.getElementById('Table').classList.replace("TableOut","TableIn")
+                    document.getElementById(ID).classList.add("activeName")
+                    document.getElementById(`Active_${ID}`).className="d-none"
+                    appediv.innerText=""
+                    //window.location.href=`${Account}/`;
+                    fetch(`/LedgerData/${Project}/?q=${Account}`)
+                    .then(res=>res.json())
+                    .then(data=>{
+                        State=data[0].entry
+                        data.forEach(element => {
+                                Creat_Date=document.createElement("h5")
+                                Dr=document.createElement("h5")
+                                Cr=document.createElement("h5")
+                                LedgerBalance=document.createElement("h5")
+                                Creat_Date.className="col-3 mt-1 pb-2"
+                                Dr.className="col-3 mt-1 pb-2"
+                                Cr.className="col-3 mt-1 pb-2"
+                                LedgerBalance.className="col-3 mt-1 pb-2"
+                                Creat_Date.innerText=element.date
+                                LedgerBalance.innerText=element.ledgerbalance
+                                if(element.entry=="DR"){
+                                    Dr.innerText=element.amount
+                                    Cr.innerText="-"
+                                }else{
+                                    Dr.innerText="-"
+                                    Cr.innerText=element.amount
+                                }
+                                appediv.appendChild(Creat_Date)
+                                appediv.appendChild(Dr)
+                                appediv.appendChild(Cr)
+                                appediv.appendChild(LedgerBalance)
+                                Balance=element.ledgerbalance
+                        });
+                        document.getElementById('Balance').innerText=Balance
+                        document.getElementById('State').innerText=State
+                    })
+                    .catch(error=>{})
+                }else{
+                    document.getElementById('Table').classList.replace("TableIn","TableOut")
+                    document.getElementById(ID).classList.remove("activeName")
+                    document.getElementById("pdfloder").classList.remove("d-none")
+                    localStorage.removeItem("ID",null)
+                }
             }
             function Ledgerpdf(Project){
                 window.location.href=`/Pdf/${Project}/Ledger`;
             }
+
+            
         </script>
 {% endblock %}

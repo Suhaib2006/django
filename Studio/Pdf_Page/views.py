@@ -26,7 +26,7 @@ def Ledger_Pdf(request,Project):
         Username=User.objects.get(username=name)
         GetProject=ProjectInfo.objects.get(user=Username,project=Project)
         LedgerName=GetProject.Trials.all().order_by("order")
-        LedgerData=GetProject.Entrys.all().order_by("date","code")
+        LedgerData=GetProject.Entrys.all().order_by("date","id","code")
         Balance=0
         State=""
         for ItemName in LedgerName:
@@ -50,7 +50,7 @@ def Ledger_Pdf(request,Project):
                         DataInfo.objects.filter(pk=item.id).update(ledgerbalance=round(Balance,2))
             Balance=0
             State=""
-        LedgerData=GetProject.Entrys.all().order_by("date","code")
+        LedgerData=GetProject.Entrys.all().order_by("date","id","code")
         Data={
             "Project":Project,
             "Ledger":LedgerName,
@@ -73,7 +73,7 @@ def TrialBalance_Pdf(request,Project):
         Data={
             "Project":Project,
             "TrialData":TrialData,
-            "Tally":Tally
+            "Tally":round(Tally,2)
         }
         #return render(request,'TrialBalancePdf.html',Data)
         pdf=HtmlPdf('TrialBalancePdf.html',Data)

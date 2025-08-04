@@ -167,6 +167,7 @@
 
 {% block Script %}
         <script>
+            localStorage.removeItem("ID",null)
             setTimeout(function() {
                 document.getElementById("Alertdiv").style.display = "none";
             }, 3000);

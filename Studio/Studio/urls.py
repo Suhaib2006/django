@@ -10,5 +10,7 @@ urlpatterns = [
     path('',include('Home_Page.urls')),
     path('Home/<str:Project>/',include('Projet_Page.urls')),
     path('Pdf/<str:Project>/',include('Pdf_Page.urls')),
-    path('Data/<str:Project>/',views.DataRead)
+    path('OptionData/<str:Project>/',views.OptionDataRead),
+    path('LedgerData/<str:Project>/',views.LedgerDataRead),
+    path('Statement/<str:Project>/',views.StatementRead),
 ] + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

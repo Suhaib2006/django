@@ -29,6 +29,8 @@ class TrialInfo(models.Model):
         amount=models.FloatField()
         state=models.CharField(max_length=10)
         order=models.IntegerField()
+        sheet=models.CharField(max_length=100,default="Choose...")
+        account_type=models.CharField(max_length=100,default="Choose...")
 
         def __str__(self):
                 return self.name

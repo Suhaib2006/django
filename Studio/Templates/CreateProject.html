@@ -3,10 +3,18 @@
     <form method="post" class="d-flex ms-5 flex-column justify-content-center" style="height: 100%;">
     {% csrf_token %} 
         <h2><b>Create your first project</b></h2>
-        <input class="inputprojectname" name="projectname" type="text" style="height: 45px; width: 80%;">
-        <div class="col-4 mb-1 mt-2 input-area" style="height: 8vh;">
+        <input class="inputprojectname" name="projectname" placeholder="Project Name" required type="text" style="height: 45px; width: 80%;">
+        
+        <div class="col-8 mb-1 mt-2 input-area" style="height: 8vh;">
+            <select class="form-select" id="inputGroupSelect03" name="Incomstatement" aria-label="Example select with button addon" style="height: 100%; border-radius: 10px; font-size: 25px;">
+                <option selected>Trade Mode</option>
+                <option value="NormalTrade">NormalTrade</option>
+                <option value="Manufacturing">Manufacturing</option>
+                <option value="NonTrading">NonTrading</option>
+            </select>
+        </div>
+        <div class="col-4 mb-1 input-area" style="height: 8vh;">
             <input type="date" required name="Date" placeholder="Date" value="{{Date}}">
-            <h2>{{Date}}</h2>
         </div>
         <button class="col-4 mt-2 btn-class"><h3>Create</h3></button>
     </form>

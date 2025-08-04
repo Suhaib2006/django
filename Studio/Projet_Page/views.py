@@ -27,7 +27,7 @@ def Project_Page(request,Project):
                     Amount=request.POST.get(f"Amount{i}")
                     Entry="DR"
                     DataInfo.objects.create(project=project,code=Code,name=Name,amount=Amount,entry=Entry,date=Create_date)
-                    TrialInfo.objects.filter(project=project,name=Name).delete()
+                    project.Trials.filter(project=project,name=Name).delete()
                     DataInfo.objects.filter(project=project,name=Name).update(active=True)
                     
             for i in range(5,9):
@@ -36,7 +36,7 @@ def Project_Page(request,Project):
                     Amount=request.POST.get(f"Amount{i}")
                     Entry="CR"
                     DataInfo.objects.create(project=project,code=Code,name=Name,amount=Amount,entry=Entry,date=Create_date)
-                    TrialInfo.objects.filter(project=project,name=Name).delete()
+                    project.Trials.filter(project=project,name=Name).delete()
                     DataInfo.objects.filter(project=project,name=Name).update(active=True)
         Entrydata=project.Entrys.all().order_by("code","date")
         Codedata=project.Codes.all().order_by("-date","-id","-code")
@@ -96,6 +96,7 @@ def TrialBalance_Page(request,Project):
             "Trial":Trial,
             "Amount":Amount,
             "Tally":Tally,
+            "incomstatement":project.incomstatement,
         }
         return render(request,'Trialbalance.html',Data)
 
@@ -111,43 +112,43 @@ def Stock_Page(request,Project):
         document=project.media.all()
         return render(request,'Stock.html',{"Project":Project,"Document":document})
 
-def Account_Page(request,Account,Project):
-    if request.user.is_authenticated:
-        name = request.user.username
-        user = User.objects.get(username=name)
-        project = ProjectInfo.objects.get(user=user,project=Project)
-        Entry=project.Entrys.filter(name=Account).order_by("date","id","code")
-        DataInfo.objects.filter(project=project,name=Account).update(active=False)
-        Drsum=0
-        Crsum=0
-        Balance=0
-        State=""
-        for item in Entry:
-            if item.entry=="DR" and State=="":
-                State="DR"
-            elif item.entry=="CR" and State=="":
-                State="CR"
-            if item.entry==State:
-                Balance+=item.amount
-                DataInfo.objects.filter(pk=item.id).update(ledgerbalance=Balance)
-            else:
-                Balance-=item.amount
-                if Balance<0:
-                    Balance*=(-1)
-                    if State=="DR":
-                        State="CR"
-                    else:
-                        State="DR"
-                DataInfo.objects.filter(pk=item.id).update(ledgerbalance=Balance)
-        Entry=project.Entrys.filter(name=Account).order_by("date","id","code")
-        try:
-            Data=project.Trials.get(name=Account)
-            Data.amount=round(Balance,2)
-            Data.state=State
-            Data.save()
-        except:
-            project.Trials.create(project=project,name=Account,amount=round(Balance,2),state=State,order=Entry[0].id)
-        return render(request,'Ledgerview.html',{"Account":Account,"Data":Entry,"Balance":Balance,"State":State})
+#def Account_Page(request,Account,Project):
+#    if request.user.is_authenticated:
+#       name = request.user.username
+#        user = User.objects.get(username=name)
+#        project = ProjectInfo.objects.get(user=user,project=Project)
+#       Entry=project.Entrys.filter(name=Account).order_by("date","id","code")
+#       DataInfo.objects.filter(project=project,name=Account).update(active=False)
+#       Drsum=0
+#        Crsum=0
+#       Balance=0
+#        State=""
+#       for item in Entry:
+#            if item.entry=="DR" and State=="":
+#                State="DR"
+#            elif item.entry=="CR" and State=="":
+#                State="CR"
+#            if item.entry==State:
+#                Balance+=item.amount
+#                DataInfo.objects.filter(pk=item.id).update(ledgerbalance=Balance)
+#           else:
+#                Balance-=item.amount
+#                if Balance<0:
+#                    Balance*=(-1)
+#                    if State=="DR":
+#                        State="CR"
+#                    else:
+#                        State="DR"
+#                DataInfo.objects.filter(pk=item.id).update(ledgerbalance=Balance)
+#        Entry=project.Entrys.filter(name=Account).order_by("date","id","code")
+#        try:
+#            Data=project.Trials.get(name=Account)
+#            Data.amount=round(Balance,2)
+#           Data.state=State
+#            Data.save()
+#        except:
+#            project.Trials.create(project=project,name=Account,amount=round(Balance,2),state=State,order=Entry[0].id)
+#        return render(request,'Ledgerview.html',{"Account":Account,"Data":Entry,"Balance":Balance,"State":State})
 
 def Delete_Page(request,Project,Code):
     if request.user.is_authenticated:

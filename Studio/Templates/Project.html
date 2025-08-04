@@ -30,12 +30,13 @@ Journal
         }
 
         .pdfview{
-            background-color: #ffae16;
+            background-color: #da1f1f;
             border-radius: 50%;
+            border: 2px solid white;
             width: 50px;
             height: 50px;
             right: 12%;
-            bottom: 15%;
+            bottom: 12%;
             cursor: pointer;
         }
 
@@ -156,7 +157,7 @@ Journal
     {% include 'Navbar.html' with Project=Project %}
     <div class="mainbox col-12 row">
         <div class="col-12 col-md-6 box right-journal p-2">
-            <form action="" method="post" class="row col-12 col-md-10 form-tag" id="Register" >
+            <form onsubmit="CheckEq(e)" action="" method="post" class="row col-12 col-md-10 form-tag" id="Register" >
                 {% csrf_token %}
                 <h3 class=" col-7"><b>Journal Entry's</b></h3>
                 <div class="col-5  mb-3 input-area" style="height: 7.5vh;">
@@ -169,7 +170,7 @@ Journal
                     </div>
                 </div>
                 <div class="col-4 input-area">
-                    <input class="focus-in form-control" id="Amount{{i}}" type="number" step="0.01" name="Amount{{i}}" placeholder="Amount" oninput="removediv('{{i}}')">
+                    <input class="focus-in form-control" id="Amount{{i}}" type="number" step="0.01" name="Amount{{i}}" placeholder="Amount"  onchange="Tallyvalidation('{{i}}')" onfocus="removediv('{{i}}')">
                 </div>
             {% endfor %}
                 <h3 style="text-align: center;">To</h3>
@@ -180,14 +181,14 @@ Journal
                     <input class="focus-in form-control" id="input{{i}}" type="text" name="Name{{i}}" placeholder="Name ac" oninput="choice('{{i}}','{{Project}}')">
                 </div>
                 <div class="col-4 input-area">
-                    <input class="focus-in form-control" id="Amount{{i}}" type="number" step="0.01" name="Amount{{i}}" placeholder="Amount" oninput="removediv(i)">
+                    <input class="focus-in form-control" id="Amount{{i}}" type="number" step="0.01" name="Amount{{i}}" placeholder="Amount"  onchange="Tallyvalidation('{{i}}')" onfocus="removediv('{{i}}')">
                 </div>
             {% endfor %} 
             <div class="col-12 p-0" style="display: flex; justify-content: space-between; align-items: center;">
                 <div class="col-5 mt-3 input-area" style="height: 8vh;">
                     <input type="number form-control" required name="Code" placeholder="Code">
                 </div>
-                <button class="col-5 mt-3 item-btn">
+                <button class="col-5 mt-3 item-btn" >
                     <h4>Submit</h4>
                 </button>
             </div>
@@ -282,7 +283,6 @@ Journal
             </div>
         </div>
 
-
         {% if codeactive %}
             <div class="position-absolute col-md-12" id="Alertdiv">
                 <div class="alert alert-danger" role="alert">
@@ -295,8 +295,11 @@ Journal
 
 {% block Script %}
         <script>
+            var Tally=0;
             setTimeout(function() {
-                document.getElementById("Alertdiv").style.display = "none";
+                if({codeactive}){
+                    document.getElementById("Alertdiv").style.display = "none";
+                }
             }, 2500);
             function menubar(){
                 document.getElementById('menu_bar').className="menu-icons-bar"
@@ -332,7 +335,7 @@ Journal
                 const optiondiv=document.getElementById(`options${i}`)
                 const inputbox=document.getElementById(`input${i}`)
                 if(inputbox.value.trim()){
-                    fetch(`/Data/${Project}/?q=${inputbox.value.trim()}`)
+                    fetch(`/OptionData/${Project}/?q=${inputbox.value.trim()}`)
                     .then(res => res.json())
                     .then(data => {
                         optiondiv.innerHTML=''
@@ -365,13 +368,27 @@ Journal
             }
             function removediv(i) {
                 const optiondiv=document.getElementById(`options${i}`)
-                optiondiv.className="d-none"
                 optiondiv.innerHTML=""
+                optiondiv.className="d-none"
             }
             function addinput(i,element){
                 document.getElementById(`input${i}`).value=element
                 document.getElementById(`Amount${i}`).focus()
                 removediv(i)
+            }
+
+            function Tallyvalidation(i){
+                const inputboxvalue=document.getElementById(`Amount${i}`).value
+                if(i<5)Tally+=parseFloat(inputboxvalue)
+                else Tally-=parseFloat(inputboxvalue)
+                console.log(Tally);
+                
+            }
+            function CheckEq(e){
+                console.log(e);
+                if(Tally!=0){
+                    e.preventDefault()
+                }
             }
         </script>
 {% endblock %}
